@@ -25,7 +25,7 @@ class IndexService extends BaseService
     {
 
         $menuData = $this->menu->getAllMenu();
-        if ($user->email != '515961601@qq.com') {
+        if ($user->email != 'krlee') {
             foreach ($menuData as $key => $val) {
                 if (!$user->may($val->permission_name)) {
                     unset($menuData[$key]);
