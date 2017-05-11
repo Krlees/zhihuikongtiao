@@ -1,0 +1,12 @@
+/node_modules
+/public/storage
+/public/hot
+/storage
+/vendor
+/.idea
+/_ide_helper.php
+/.phpstorgim.meta.php
+Homestead.json
+Homestead.yaml
+.env
+npm-debug.log
