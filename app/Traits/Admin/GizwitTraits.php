@@ -94,7 +94,7 @@ trait GizwitTraits
             'x-gizwits-user-token: ' . $userToken
         ];
 
-        $body["raw"] = $cmd;
+        $body = ['RAW_SMARTHOME' => $cmd];
 
         $res = curl_do('http://api.gizwits.com/app/control/' . $did, $header, json_encode($body));
 
