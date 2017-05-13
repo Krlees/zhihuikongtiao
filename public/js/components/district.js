@@ -10,18 +10,14 @@ $(function () {
     }
     $(document).on('change', '#province', function () {
         var Value = $(this).val();
-        if (Value == '0') {
-            return false;
-        }
 
-        getSub('/Api/get-district', $(this).val(), 'city', false);
+
+        getSub('/Api/get-district/2', $(this).val(), 'city', true);
     });
     $(document).on('change', '#city', function () {
         var Value = $(this).val();
-        if (Value == '0') {
-            return false;
-        }
 
-        getSub('/Api/get-district', $(this).val(), 'area', false);
+
+        getSub('/Api/get-district/3', $(this).val(), 'area', true);
     });
 });

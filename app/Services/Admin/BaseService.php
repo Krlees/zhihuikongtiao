@@ -48,16 +48,17 @@ class BaseService
      * @Author Krlee
      *
      */
-    public function getDistrict($upid = 0)
+    public function getDistrict($upid = 0,$level=0)
     {
-        $list = Cache::store('file')->get('district_' . $upid);
-        if (empty($list)) {
-            $list = DB::table('district')->where('upid', $upid)->orderBy('id', 'desc')->get()->toArray();
-            foreach ($list as $k => $v) {
-                $v = get_object_vars($v);
-                $list[$k] = $v;
-            }
-            Cache::store('file')->forever('district_' . $upid, $list);
+        $where[] = ['upid','=',$upid];
+        if( $level ){
+            $where[] = ['level','=',$level];
+        }
+
+        $list = DB::table('district')->where($where)->orderBy('id', 'desc')->get()->toArray();
+        foreach ($list as $k => $v) {
+            $v = get_object_vars($v);
+            $list[$k] = $v;
         }
 
         return $list;

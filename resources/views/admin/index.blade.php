@@ -101,47 +101,47 @@
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                             <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-messages">
+                        {{--<ul class="dropdown-menu dropdown-messages">--}}
                             {{--这里循环最新通知消息--}}
 
-                            <li class="m-t-xs">
-                                <div class="dropdown-messages-box">
-                                    <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="/hplus/img/a7.jpg">
-                                    </a>
-                                    <div class="media-body">
-                                        <small class="pull-right">46小时前</small>
-                                        <strong>小四</strong> 这个在日本投降书上签字的军官，建国后一定是个不小的干部吧？
-                                        <br>
-                                        <small class="text-muted">3天前 2014.11.8</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="dropdown-messages-box">
-                                    <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="/hplus/img/a4.jpg">
-                                    </a>
-                                    <div class="media-body ">
-                                        <small class="pull-right text-navy">25小时前</small>
-                                        <strong>国民岳父</strong> 如何看待“男子不满自己爱犬被称为狗，刺伤路人”？——这人比犬还凶
-                                        <br>
-                                        <small class="text-muted">昨天</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
+                            {{--<li class="m-t-xs">--}}
+                                {{--<div class="dropdown-messages-box">--}}
+                                    {{--<a href="profile.html" class="pull-left">--}}
+                                        {{--<img alt="image" class="img-circle" src="/hplus/img/a7.jpg">--}}
+                                    {{--</a>--}}
+                                    {{--<div class="media-body">--}}
+                                        {{--<small class="pull-right">46小时前</small>--}}
+                                        {{--<strong>小四</strong> 这个在日本投降书上签字的军官，建国后一定是个不小的干部吧？--}}
+                                        {{--<br>--}}
+                                        {{--<small class="text-muted">3天前 2014.11.8</small>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</li>--}}
+                            {{--<li class="divider"></li>--}}
+                            {{--<li>--}}
+                                {{--<div class="dropdown-messages-box">--}}
+                                    {{--<a href="profile.html" class="pull-left">--}}
+                                        {{--<img alt="image" class="img-circle" src="/hplus/img/a4.jpg">--}}
+                                    {{--</a>--}}
+                                    {{--<div class="media-body ">--}}
+                                        {{--<small class="pull-right text-navy">25小时前</small>--}}
+                                        {{--<strong>国民岳父</strong> 如何看待“男子不满自己爱犬被称为狗，刺伤路人”？——这人比犬还凶--}}
+                                        {{--<br>--}}
+                                        {{--<small class="text-muted">昨天</small>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</li>--}}
+                            {{--<li class="divider"></li>--}}
 
                             {{--查看更多--}}
-                            <li>
-                                <div class="text-center link-block">
-                                    <a class="J_menuItem" href="mailbox.html" data-index="88">
-                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
+                            {{--<li>--}}
+                                {{--<div class="text-center link-block">--}}
+                                    {{--<a class="J_menuItem" href="mailbox.html" data-index="88">--}}
+                                        {{--<i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>--}}
+                                    {{--</a>--}}
+                                {{--</div>--}}
+                            {{--</li>--}}
+                        {{--</ul>--}}
                     </li>
                     <li class="dropdown">
                         <span class="text-muted text-xs block">超级管理员, 欢迎你
@@ -181,7 +181,7 @@
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{url('admin/dashboard')}}"
                     frameborder="0"
-                    data-id="dashboard" seamless></iframe>
+                    data-id="{{url('admin/dashboard')}}" seamless></iframe>
         </div>
         <div class="footer">
             <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>

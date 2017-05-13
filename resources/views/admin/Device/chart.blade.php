@@ -40,10 +40,6 @@
                                 {!! Form::select('data[area_id]', ['0'=>'-请选择-'], '', ['class' => 'chosen-select','id'=>'area']) !!}
                             </div>
                             <div class="col-md-2">
-                                {!! Form::label('区/县：', null, ['class' => 'col-sm-4 control-label']) !!}
-                                {!! Form::select('data[area_id]', ['0'=>'-请选择-'], '', ['class' => 'chosen-select','id'=>'area']) !!}
-                            </div>
-                            <div class="col-md-2">
                                 {!! Form::text('data[username]', '', ['placeholder' => '请输入酒店名称','class'=>'col-sm-3 form-control','id'=>'username']) !!}
                             </div>
                             <div class="col-md-2">

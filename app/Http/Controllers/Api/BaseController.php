@@ -40,8 +40,8 @@ class BaseController extends Controller
      * @Author Krlee
      *
      */
-    public function getDistrict($upid = 0, BaseService $base)
+    public function getDistrict($level = 1, $upid = 0, BaseService $base)
     {
-        return $base->getDistrict($upid);
+        return $base->getDistrict($upid,$level);
     }
 }

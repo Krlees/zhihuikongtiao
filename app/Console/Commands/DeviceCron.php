@@ -48,6 +48,10 @@ class DeviceCron extends Command
         $nowHour = date('H');
         $cron = Cache::store('file')->get('device_cron_' . date('Y-m-d'));
 
+        if( !$cron ) {
+            return true;
+        }
+
         foreach ($cron as $k => $v) {
             if ($v['user_id']) {
 
@@ -70,8 +74,10 @@ class DeviceCron extends Command
 
                 $response = $this->sendControlGiz($gizwitsCfg['appid'], $result['token'], $v['did'], $cmd);
                 dd($response);
-                return true;
+
             }
         }
+
+        return true;
     }
 }

@@ -22,12 +22,12 @@ function getSub(url, id, sub, init = true, is_hidden = true) {
             $(chird).chosen("destroy");
             $(chird).html(initHtml + selectHtmls).chosen({width: "150px"});
 
-            if (is_hidden) {
-                $(chirdChosen).hide();
-            }
-            else {
-                $(chirdChosen).show();
-            }
+            // if (is_hidden) {
+            //     $(chirdChosen).hide();
+            // }
+            // else {
+            //     $(chirdChosen).show();
+            // }
 
         });
     }

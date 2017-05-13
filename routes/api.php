@@ -19,6 +19,6 @@ use Illuminate\Http\Request;
 //     Route::any('order-create','OrderController@create');
 // });
 
-Route::get('get-district/{upid?}','Api\BaseController@getDistrict');
+Route::get('get-district/{level?}/{upid?}','Api\BaseController@getDistrict');
 
 
