@@ -25,14 +25,17 @@ class UsersController extends BaseController
             // 过滤参数
             $data = $this->cleanAjaxPageParam($request->all());
             $results = $this->user->ajaxUserList($data);
+            foreach ($results['rows'] as $k => $v) {
+                $results['rows'][$k]['is_super'] = ($v['is_super'] == 1) ? '是' : '否';
+            }
 
             return $this->responseAjaxTable($results['total'], $results['rows']);
         } else {
 
-            $action = $this->returnActionFormat(url('admin/user/add'), url('admin/user/edit'), url('admin/user/del'));
-            $reponse = $this->returnSearchFormat(url('admin/user/index'), null, $action);
+            $action = $this->returnActionFormat(url('admin / user / add'), url('admin / user / edit'), url('admin / user / del'));
+            $reponse = $this->returnSearchFormat(url('admin / user / index'), null, $action);
 
-            return view('admin/user/index', compact('reponse'));
+            return view('admin / user / index', compact('reponse'));
         }
     }
 
@@ -41,7 +44,7 @@ class UsersController extends BaseController
         if ($request->ajax()) {
 
             $b = $this->user->createData($request->all());
-            return $b ? $this->responseData(0, '', null, url('admin/menu/index')) : $this->responseData(400);
+            return $b ? $this->responseData(0, '', null, url('admin / menu / index')) : $this->responseData(400);
 
         } else {
 
@@ -51,17 +54,17 @@ class UsersController extends BaseController
             $this->returnFieldFormat('select', '上级酒店', 'data[pid]',
                 $this->returnSelectFormat($userList, 'name', 'id'), ['id' => 'top']
             );
-            $this->returnFieldFormat('text', '酒店名称', 'data[name]', '', ['dataType' => 's1-48']);
-            $this->returnFieldFormat('text', '登陆账号', 'data[email]', '', ['dataType' => 's4-32']);
-            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['dataType' => 's4-18']);
-            $this->returnFieldFormat('text', '联系电话', 'data[phone]', '', ['dataType' => 's9-15']);
+            $this->returnFieldFormat('text', '酒店名称', 'data[name]', '', ['dataType' => 's1 - 48']);
+            $this->returnFieldFormat('text', '登陆账号', 'data[email]', '', ['dataType' => 's4 - 32']);
+            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['dataType' => 's4 - 18']);
+            $this->returnFieldFormat('text', '联系电话', 'data[phone]', '', ['dataType' => 's9 - 15']);
             //省市区选择框
             $this->returnFieldFormat('select', '省市区', 'data[province_id]',
                 $this->returnSelectFormat($district, 'name', 'id'), ['id' => 'province']
             );
             $this->returnFieldFormat('select', '', 'data[city_id]', [], ['id' => 'city']);
             $this->returnFieldFormat('select', '', 'data[area_id]', [], ['id' => 'area']);
-            $this->returnFieldFormat('text', '详细地址', 'address', '', ['dataType' => 's1-70']);
+            $this->returnFieldFormat('text', '详细地址', 'address', '', ['dataType' => 's1 - 70']);
 
             $roles = $this->user->getAllRoles();
             $extendField = $presenter->roleList($roles);
@@ -69,7 +72,7 @@ class UsersController extends BaseController
             $reponse = $this->returnFormFormat('新建酒店', $this->formField);
             $reponse['extendField'] = $extendField;
 
-            return view('admin/user/add', compact('reponse'));
+            return view('admin / user / add', compact('reponse'));
         }
     }
 
@@ -96,10 +99,10 @@ class UsersController extends BaseController
             $this->returnFieldFormat('select', '上级酒店', 'data[pid]',
                 $this->returnSelectFormat($userList, 'name', 'id', $info->pid), ['id' => 'top']
             );
-            $this->returnFieldFormat('text', '酒店名称', 'data[name]', $info->name, ['dataType' => 's1-48']);
-            $this->returnFieldFormat('text', '登陆账号', 'data[email]', $info->email, ['dataType' => 's4-32']);
-            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['placeholder' => '不修改密码请为空', 'dataType' => 's0-18']);
-            $this->returnFieldFormat('text', '联系电话', 'data[phone]', $info->phone, ['dataType' => 's9-15']);
+            $this->returnFieldFormat('text', '酒店名称', 'data[name]', $info->name, ['dataType' => 's1 - 48']);
+            $this->returnFieldFormat('text', '登陆账号', 'data[email]', $info->email, ['dataType' => 's4 - 32']);
+            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['placeholder' => '不修改密码请为空', 'dataType' => 's0 - 18']);
+            $this->returnFieldFormat('text', '联系电话', 'data[phone]', $info->phone, ['dataType' => 's9 - 15']);
             //省市区选择框
             $this->returnFieldFormat('select', '省市区', 'data[province_id]',
                 $this->returnSelectFormat($district, 'name', 'id', $info->province_id),
@@ -118,7 +121,7 @@ class UsersController extends BaseController
                 );
             }
 
-            $this->returnFieldFormat('text', '详细地址', 'address', $info->area_info, ['dataType' => 's1-70']);
+            $this->returnFieldFormat('text', '详细地址', 'address', $info->area_info, ['dataType' => 's1 - 70']);
 
             // 获取用户权限
             $roles = $this->user->getAllRoles();
@@ -127,7 +130,7 @@ class UsersController extends BaseController
             $reponse = $this->returnFormFormat('编辑酒店', $this->formField);
             $reponse['extendField'] = $extendField;
 
-            return view('admin/user/edit', compact('reponse', 'info'));
+            return view('admin / user / edit', compact('reponse', 'info'));
         }
     }
 

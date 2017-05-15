@@ -15,6 +15,7 @@
             {!! $tablePresenter->jsColums('设备数量','device_count') !!}
             {!! $tablePresenter->jsColums('联系地址','area_info') !!}
             {!! $tablePresenter->jsColums('联系电话','phone') !!}
+            {!! $tablePresenter->jsColums('是否超级管理员','is_super') !!}
             {!! $tablePresenter->jsColums('加入时间','created_at','true') !!}
             {!! $tablePresenter->jsEvents() !!}
         ];
