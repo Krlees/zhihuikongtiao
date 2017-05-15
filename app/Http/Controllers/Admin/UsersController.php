@@ -32,10 +32,10 @@ class UsersController extends BaseController
             return $this->responseAjaxTable($results['total'], $results['rows']);
         } else {
 
-            $action = $this->returnActionFormat(url('admin / user / add'), url('admin / user / edit'), url('admin / user / del'));
-            $reponse = $this->returnSearchFormat(url('admin / user / index'), null, $action);
+            $action = $this->returnActionFormat(url('admin/user/add'), url('admin/user/edit'), url('admin/user/del'));
+            $reponse = $this->returnSearchFormat(url('admin/user/index'), null, $action);
 
-            return view('admin / user / index', compact('reponse'));
+            return view('admin/user/index', compact('reponse'));
         }
     }
 
@@ -44,7 +44,7 @@ class UsersController extends BaseController
         if ($request->ajax()) {
 
             $b = $this->user->createData($request->all());
-            return $b ? $this->responseData(0, '', null, url('admin / menu / index')) : $this->responseData(400);
+            return $b ? $this->responseData(0, '', null, url('admin/menu/index')) : $this->responseData(400);
 
         } else {
 
@@ -72,7 +72,7 @@ class UsersController extends BaseController
             $reponse = $this->returnFormFormat('新建酒店', $this->formField);
             $reponse['extendField'] = $extendField;
 
-            return view('admin / user / add', compact('reponse'));
+            return view('admin/user/add', compact('reponse'));
         }
     }
 
@@ -81,7 +81,7 @@ class UsersController extends BaseController
         if ($request->ajax()) {
 
             $param = $request->all();
-            $this->checkRequireParams($param['data'], ['pid','password', 'role']);
+            $this->checkRequireParams($param['data'], ['pid', 'password', 'role']);
 
             $b = $this->user->updateData($id, $param);
             return $b ? $this->responseData(0) : $this->responseData(400);
@@ -108,13 +108,13 @@ class UsersController extends BaseController
                 $this->returnSelectFormat($district, 'name', 'id', $info->province_id),
                 ['id' => 'province']
             );
-            if( $city ) {
+            if ($city) {
                 $this->returnFieldFormat('select', '', 'data[city_id]',
                     $this->returnSelectFormat([$city], 'name', 'id', $info->city_id),
                     ['id' => 'city']
                 );
             }
-            if($area) {
+            if ($area) {
                 $this->returnFieldFormat('select', '', 'data[area_id]',
                     $this->returnSelectFormat([$area], 'name', 'id', $info->area_id),
                     ['id' => 'area']
@@ -130,7 +130,7 @@ class UsersController extends BaseController
             $reponse = $this->returnFormFormat('编辑酒店', $this->formField);
             $reponse['extendField'] = $extendField;
 
-            return view('admin / user / edit', compact('reponse', 'info'));
+            return view('admin/user/edit', compact('reponse', 'info'));
         }
     }
 
