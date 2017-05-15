@@ -36,7 +36,7 @@ class MenuController extends BaseController
                 'autoSearch' => true
             ]);
 
-            return view('admin/Menu/index', compact('reponse'));
+            return view('admin/menu/index', compact('reponse'));
         }
     }
 
