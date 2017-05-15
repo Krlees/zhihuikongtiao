@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-
+use App\Http\Controllers\Admin\BaseController;
 use App\Services\Admin\RoomService;
 use App\Services\Admin\UserService;
 use App\Traits\Admin\FormTraits;

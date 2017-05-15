@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+
 use App\Http\Controllers\Admin\BaseController;
 use App\Services\Admin\IndexService;
 use Illuminate\Http\Request;

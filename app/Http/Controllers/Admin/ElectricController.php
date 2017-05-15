@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-
+use App\Http\Controllers\Admin\BaseController;
 use App\Services\Admin\DeviceService;
 use App\Services\Admin\ElectricService;
 use App\Services\Admin\RoomService;

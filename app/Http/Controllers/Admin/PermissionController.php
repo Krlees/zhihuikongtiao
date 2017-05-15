@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\BaseController;
 use App\Services\Admin\PermissionService;
 use Illuminate\Http\Request;
 

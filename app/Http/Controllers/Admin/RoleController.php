@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\BaseController;
 use App\Models\User;
 use App\Presenters\Admin\RolePresenter;
 use App\Services\Admin\RoleService;

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\BaseController;
 use App\Services\Admin\DeviceService;
 use App\Services\Admin\QianhaiService;
 use App\Services\Admin\RoomService;

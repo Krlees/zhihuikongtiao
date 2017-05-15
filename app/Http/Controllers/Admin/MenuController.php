@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Admin\BaseController;
 use App\Repositories\MenuRepositoryEloquent;
 use App\Services\Admin\MenuService;
 use App\Traits\Admin\FormTraits;
