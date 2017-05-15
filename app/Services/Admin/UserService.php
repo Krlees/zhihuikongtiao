@@ -31,6 +31,8 @@ class UserService extends BaseService
                 ['email', 'like', "%{$param['search']}%",'OR'],
             ];
         }
+//        $where[] = ['is_super','<>',1];
+
 
         $results = $this->user->ajaxUserList($param['offset'], $param['limit'], $param['sort'], $param['order'], $where);
 
@@ -51,7 +53,7 @@ class UserService extends BaseService
      */
     public function getUserSelects($pid = 0)
     {
-        return $this->user->findWhere(['pid' => $pid])->toArray();
+        return $this->user->findWhere(['pid' => $pid,'is_super'=>0])->toArray();
     }
 
     /**
@@ -62,7 +64,7 @@ class UserService extends BaseService
      */
     public function getLevelUser($level=1,$where=[])
     {
-        return $this->user->findWhere(['level' => $level])->toArray();
+        return $this->user->findWhere(['level' => $level,'is_super'=>0])->toArray();
     }
 
     /**
