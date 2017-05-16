@@ -56,9 +56,7 @@ class ElectricController extends BaseController
         if ($request->ajax()) {
 
             $param = $request->all();
-            if (empty($param['data']['name']) || !isset($param['data']['ele_brand_id'])) {
-                $this->responseData(1004);
-            }
+
             $param['data']['ele_id'] = 49152;
             $param['data']['device_id'] = $deviceId;
 

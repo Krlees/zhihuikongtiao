@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    {!! Form::open(['url' => url('admin/electric/add'),'class'=>'form-horizontal m-t validform']) !!}
+                    {!! Form::open(['url' => url('admin/electric/add').'/'.$deviceId,'class'=>'form-horizontal m-t validform']) !!}
 
                     <div class="form-group">
                         {!! Form::label('选择空调品牌', null, ['class' => 'col-sm-2 control-label']) !!}
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         {!! Form::label('数据量', null, ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::text('data[count]','',['class'=>'col-sm-4 form-control','id'=>'device-count']) !!}
+                            {!! Form::text('','',['class'=>'col-sm-4 form-control','id'=>'device-count']) !!}
                             <b id="device-count"></b>
                         </div>
                     </div>
