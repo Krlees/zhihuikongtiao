@@ -10,6 +10,8 @@
 @endcomponent
 @include('admin.common.modal')
 
+
+
 <script type="text/javascript">
     $(function () {
         $('#sub_chosen').hide();

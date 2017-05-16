@@ -285,11 +285,11 @@ class DeviceService extends BaseService
      * @Author Krlee
      *
      */
-    public function addData($users, $data)
+    public function addData($data)
     {
         $gizwitsCfg = Config::get('gizwits.cfg');
 
-        $gizwit_id = array_get($users, 'id');
+        $gizwit_id = array_get($data,'user_id') ?: \Auth::user()->id;
         if (!$gizwit_id) {
             return false;
         }
@@ -303,7 +303,6 @@ class DeviceService extends BaseService
         $gizwitUser = $result;
         $minutes = ($result['expire_at'] - time()) / 60;
 
-
         // 2. 绑定设备,获取设备状态
         $result = $this->bingDevice($gizwitsCfg['appid'], $gizwitsCfg['productkey'], $gizwitsCfg['productsecret'], $gizwitUser['token'], $data['mac']);
         if (isset($result['error_code'])) {
@@ -315,7 +314,7 @@ class DeviceService extends BaseService
             $id = DB::table($this->device->getTable())->insertGetId([
                 'did' => $result['did'],
                 'mac' => $result['mac'],
-                'user_id' => \Auth::user()->id ?: 0,
+                'user_id' => $gizwit_id ?: 0,
                 'product_key' => $result['product_key'],
                 'passcode' => $result['passcode'],
                 'room_id' => array_get($data, 'room_id', 0),

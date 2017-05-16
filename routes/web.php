@@ -100,12 +100,15 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('setting/{id}', 'DeviceController@setting');   // 冷热实况
         Route::any('save-cmd', 'DeviceController@saveFirstSyncCmd');   // 保存第一次获取的设备状态
         Route::any('save-state', 'DeviceController@saveState');   // 存储每次设备返回的状态
+        Route::any('get-device-count/{deviceId?}', 'DeviceController@getDataCount');   // 存储每次设备返回的状态
+        Route::any('save-device-count/{deviceId?}', 'DeviceController@setDataCount');   // 存储每次设备返回的状态
+        Route::any('send-electric-cmd', 'DeviceController@sendElectricCmd');   // 存储每次设备返回的状态
     });
 
     // 电器
     Route::group(['prefix' => 'electric'], function () {
         Route::any('index', 'ElectricController@index');
-        Route::any('add', 'ElectricController@add');
+        Route::any('add/{deviceId}', 'ElectricController@add');
         Route::any('edit/{id}', 'ElectricController@edit');
         Route::any('del', 'ElectricController@del');
         Route::any('get-device/{room_id}', 'ElectricController@getDevice');

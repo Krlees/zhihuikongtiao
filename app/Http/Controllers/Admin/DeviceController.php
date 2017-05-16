@@ -57,8 +57,8 @@ class DeviceController extends BaseController
 
         $info = $this->device->get($id);
         $gizwitsCfg = Config::get('gizwits.cfg');
-        $gizwit_id = $this->users['gizwit_id'];
-        $gizwit_id = '13172166171';
+
+        $gizwit_id = $info->user_id;
         $sync_cmd = implode(",", $qianhaiService->sync_cmd);
 
         return view('admin/Device/adjust', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
@@ -76,7 +76,7 @@ class DeviceController extends BaseController
             $param = $request->all();
             $this->checkRequireParams($param['data']);
 
-            $result = $this->device->addData(Auth::user(), $param['data']);
+            $result = $this->device->addData($param['data']);
             $result ?
                 $this->responseData(0, '', $result, url('admin/device/index')) :
                 $this->responseData(9000, "设备添加失败或已存在");
@@ -85,11 +85,11 @@ class DeviceController extends BaseController
             // 判断是否是超级管理员
             if (Auth::user()->hasRole('admin')) {
                 $user = $userService->getUserSelects(0);
-                $this->returnFieldFormat('select', '酒店', '',
+                $this->returnFieldFormat('select', '酒店', 'data[user_id]',
                     $this->returnSelectFormat($user),
                     ['id' => 'top']
                 );
-                $this->returnFieldFormat('select', '', '', [], ['id' => 'sub']);
+                $this->returnFieldFormat('select', '', 'data[user_id]', [], ['id' => 'sub']);
             }
 
             $roomSelect = $roomService->getAll(Auth::user()->id);
@@ -284,5 +284,61 @@ class DeviceController extends BaseController
         return ['RAW_SMARTHOME' => $cmd];
     }
 
+    public function getDataCount($deviceId, Request $request)
+    {
+        $brand = $request->input('brand_id');
+        $list = $this->getDeviceCount(49152, $brand);
+        $list = $list['root'];
+        $count = count($list);
+
+        return compact('list', 'count');
+    }
+
+    public function setDataCount($deviceId, Request $request, QianhaiService $qianhaiService)
+    {
+        $ele_count = $request->input('ele_count');
+        $device_key = Config::get('gizwits.electrical.49152');
+
+        $save_cmd = $qianhaiService->build_cmd(49152, 48, 1);
+        $save_cmd[4] = 7;
+        $save_cmd[5] = 1;//设备类型
+        $save_cmd[14] = 1;//空调只保存一个就可以
+        $k = 0;
+        for ($i = 0; $i < count($device_key); $i++) {
+            $key_val = $this->key_val(49152, $ele_count, $device_key[$i]['kv']);
+
+            $key_val['root'] = $qianhaiService->ReloadAirKeyValue($key_val['root']);
+
+            $save_cmd[14 + $k + 1] = 1;//自定义键值，空调都是1
+            $save_cmd[14 + $k + 2] = count($key_val['root']);
+            for ($j = 0; $j < count($key_val['root']); $j++) {
+                $save_cmd[14 + $k + 3 + $j] = $key_val['root'][$j];
+            }
+            $k += count($key_val['root']) + 2;
+            break;//空调只传一个
+        }
+        $save_cmd[2] += $k + 1;
+
+        return ['RAW_SMARTHOME' => $save_cmd];
+    }
+
+    public function sendElectricCmd(Request $request, QianhaiService $qianhaiService)
+    {
+        $ele_count = $request->input('ele_count');
+        $device_type = $qianhaiService->get_device_type(49152);
+        $key_data = $this->key_val(49152, $ele_count, 49153);
+
+        $cmd = $qianhaiService->build_cmd(49152, 32, 1, $key_data['root']);
+        $cmd[4] = 7;//遥控数据传输
+        $cmd[5] = 1;//类型
+        $cmd[6] = 1;//自定键值, 1为开机
+        $cmd = $qianhaiService->check_sum($cmd, $cmd[2]);
+        foreach ($cmd as $k=>$v){
+            $cmd[$k] = (int)$v;
+        }
+
+
+        return ['RAW_SMARTHOME' => $cmd];
+    }
 
 }

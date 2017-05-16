@@ -25,6 +25,7 @@
                 'formatter': function (value, row, index) {
                     var strs = "";
                     strs += '<a class="view btn btn-xs btn-info tooltips" href="{{url('admin/device/setting')}}/' + row.id + '" title="配置设备上网" data-toggle="modal" data-target="#myModal" data-original-title="配置设备上网" data-placement="top"><i class="fa fa-eye"></i>配置设备上网</a>　';
+                    strs += '<a class="adjust btn btn-xs btn-outline btn-danger tooltips" href="{{url('admin/electric/add')}}/' + row.id + '" title="添加受控设备"> <i class="fa fa-paper-plane-o"></i>添加受控设备</a>　';
                     strs += '<a class="adjust btn btn-xs btn-outline btn-success tooltips" href="{{url('admin/device/adjust')}}/' + row.id + '" title="调控"> <i class="fa fa-paper-plane-o"></i>调控</a>　';
                     strs += '<a class="edit btn btn-xs btn-outline btn-warning tooltips" href="javascript:void(0)" title="编辑"><i class="fa fa-edit"></i></a>　';
                     strs += '<a class="remove btn btn-xs btn-outline btn-danger tooltips destroy_item" href="javascript:void(0)" title="删除"> <i class="fa fa-trash"></i></a>　';

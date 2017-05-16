@@ -94,9 +94,24 @@ class ElectricService extends BaseService
 
         $eleDataCount = $this->getDeviceCount($data['ele_id'], $data['ele_brand_id']);
         $data['ele_count'] = json_encode($eleDataCount['root']);
-
-        $this->getDeviceCount($data['ele_id'], $data['ele_brand_id']);
         $data['created_at'] = date('Y-m-d H:i:s');
+
+        $eleBrandArr = explode("(",$data['ele_brand_name']);
+
+        // 获取电器类型下面的型号
+        $modeType = [];
+        $deviceModes = $this->getDeviceModel(49152);
+        foreach ($deviceModes['root'] as $k=>$v){
+            if( strpos($v['model'],$eleBrandArr[0]) !== false){
+                $modeType[] = $v['row'];
+            }
+        }
+
+        foreach ($modeType as $k=>$v){
+            // 获取指定电器，品牌，相应按键的数据
+            $r = $this->key_val(49152,$v,49153);
+            dd($r);
+        }
 
         return DB::table($this->tbName)->insert($data);
     }

@@ -116,6 +116,7 @@ class QianhaiService
             }
         }
 
+
         $this->mTemperature = $data[22];
         $this->mWindRate = $data[23];
         $this->mWindDirection = $data[24];
@@ -265,7 +266,7 @@ class QianhaiService
     {
         $device_type = Config::get('gizwits.device_type');
         foreach ($device_type as $v) {
-            if ($v[2] == $typenum)
+            if ($v[1] == $typenum)
                 return $v;
         }
     }

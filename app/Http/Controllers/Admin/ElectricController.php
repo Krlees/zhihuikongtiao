@@ -51,45 +51,30 @@ class ElectricController extends BaseController
      * @Author Krlee
      *
      */
-    public function add(Request $request, RoomService $roomService)
+    public function add($deviceId, Request $request, RoomService $roomService, DeviceService $deviceService)
     {
         if ($request->ajax()) {
 
             $param = $request->all();
-            $this->checkRequireParams($param['data'], ['ele_brand_id']);
-            if (!isset($param['data']['ele_brand_id'])) {
+            if (empty($param['data']['name']) || !isset($param['data']['ele_brand_id'])) {
                 $this->responseData(1004);
             }
+            $param['data']['ele_id'] = 49152;
+            $param['data']['device_id'] = $deviceId;
 
             $result = $this->elec->addData($param['data']);
             $result ?
-                $this->responseData(0, '', $result, url('admin/elec/index')) :
+                $this->responseData(0, '', $result, url('admin/device/index')) :
                 $this->responseData(9000, "设备添加失败或已存在");
 
         } else {
 
-            $electricCfg = Config::get('gizwits.device_type');
-            $roomSelect = $roomService->getAll(Auth::user()->id);
+            $brand = $this->elec->getBrand(49152);
+            $info = $deviceService->get($deviceId);
+            $gizwit_id = $info->user_id;
+            $gizwitsCfg = Config::get('gizwits.cfg');
 
-            // 表单字段
-            $this->returnFieldFormat('text', '标示名（必填）', 'data[name]', '', ['dataType' => 's4-18']);
-            $this->returnFieldFormat('select', '房间', '',
-                $this->returnSelectFormat($roomSelect),
-                ['id' => 'top']
-            );
-            $this->returnFieldFormat('select', '设备（必填）', 'data[device_id]', [], ['id' => 'sub']);
-            $this->returnFieldFormat('select', '电器类型（必填）', 'data[ele_id]',
-                $this->returnSelectFormat($electricCfg, 0, 1),
-                ['id' => 'electric']
-            );
-            $this->returnFieldFormat('select', '电器品牌（必填）', 'data[ele_brand_id]',
-                $this->returnSelectFormat($electricCfg, 0, 1),
-                ['id' => 'brand']
-            );
-
-            $reponse = $this->returnFormFormat('绑定电器', $this->getFormField());
-
-            return view('admin/electric/add', compact('reponse'));
+            return view('admin/electric/add', compact('deviceId', 'brand', 'gizwit_id', 'info', 'gizwitsCfg'));
         }
 
     }

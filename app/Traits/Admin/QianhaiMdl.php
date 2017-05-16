@@ -84,13 +84,9 @@ trait QianhaiMdl
      */
     public function getDeviceCount($id = '', $brand = '')
     {
-        $result = Cache::store('file')->get('device_count_' . $id . '_' . $brand);
-        if ($result) {
-            return json_decode($result, true);
-        }
+
 
         $result = curl_do('http://120.25.102.203:8080/cgi-bin/t.cgi?cmd=device_count&id=' . $id . '&brand=' . $brand);
-        Cache::store('file')->forever('device_count_' . $id . '_' . $brand, $result);
 
         return json_decode($result, true);
     }
