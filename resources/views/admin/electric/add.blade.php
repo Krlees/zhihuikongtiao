@@ -87,6 +87,7 @@
 <script src="{{asset('hplus/js/plugins/layer/layer.min.js')}}"></script>
 <script src="{{asset('hplus/js/plugins/bootstrap-switch/bootstrap-switch.min.js')}}"></script>
 <script src="{{asset('hplus/js/gizwits_ws_0.3.0.js')}}"></script>
+<script src="{{asset('hplus/js/Validform_v5.3.2_min.js')}}"></script>git
 <script type="text/javascript">
     var $valid = $(".validform").Validform({
 //        tiptype: function (msg, o, cssctl) {
