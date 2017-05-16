@@ -61,7 +61,7 @@ class DeviceController extends BaseController
         $gizwit_id = $info->user_id;
         $sync_cmd = implode(",", $qianhaiService->sync_cmd);
 
-        return view('admin/Device/adjust', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
+        return view('admin/device/adjust', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
     }
 
     /**
