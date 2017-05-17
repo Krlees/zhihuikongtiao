@@ -100,10 +100,10 @@ class UsersController extends BaseController
             $this->returnFieldFormat('select', '上级酒店', 'data[pid]',
                 $this->returnSelectFormat($userList, 'name', 'id', $info->pid), ['id' => 'top']
             );
-            $this->returnFieldFormat('text', '酒店名称', 'data[name]', $info->name, ['dataType' => 's1 - 48']);
-            $this->returnFieldFormat('text', '登陆账号', 'data[email]', $info->email, ['dataType' => 's4 - 32']);
-            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['placeholder' => '不修改密码请为空', 'dataType' => 's0 - 18']);
-            $this->returnFieldFormat('text', '联系电话', 'data[phone]', $info->phone, ['dataType' => 's9 - 15']);
+            $this->returnFieldFormat('text', '酒店名称', 'data[name]', $info->name, []);
+            $this->returnFieldFormat('text', '登陆账号', 'data[email]', $info->email, []);
+            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['placeholder' => '不修改密码请为空']);
+            $this->returnFieldFormat('text', '联系电话', 'data[phone]', $info->phone, []);
             //省市区选择框
             $this->returnFieldFormat('select', '省市区', 'data[province_id]',
                 $this->returnSelectFormat($district, 'name', 'id', $info->province_id),
