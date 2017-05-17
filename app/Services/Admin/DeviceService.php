@@ -142,13 +142,16 @@ class DeviceService extends BaseService
         if (\Auth::user()->hasRole('admin') && $param) {
             $where = [];
             if ($param['province_id']) {
-                $where[] = ['province_id', 'eq', $param['province_id']];
+                $where[] = ['province_id', '=', $param['province_id']];
             }
             if ($param['city_id']) {
-                $where[] = ['city_id', 'eq', $param['city_id']];
+                $where[] = ['city_id', '=', $param['city_id']];
             }
             if ($param['area_id']) {
-                $where[] = ['area_id', 'eq', $param['area_id']];
+                $where[] = ['area_id', '=', $param['area_id']];
+            }
+            if(isset($param['username'])){
+                $where[] = ['name', '=', $param['username']];
             }
 
             // 查询酒店
