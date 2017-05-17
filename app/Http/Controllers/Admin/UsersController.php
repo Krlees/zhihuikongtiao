@@ -59,7 +59,7 @@ class UsersController extends BaseController
             $this->returnFieldFormat('text', '酒店名称', 'data[name]', '', ['dataType' => 's1-48']);
             $this->returnFieldFormat('text', '登陆账号', 'data[email]', '', ['dataType' => '*']);
             $this->returnFieldFormat('text', '密码', 'data[password]', '', ['dataType' => 's4-18']);
-            $this->returnFieldFormat('text', '联系电话', 'data[phone]', '', ['dataType' => 's9-15']);
+            $this->returnFieldFormat('text', '联系电话', 'data[phone]', '', ['dataType' => 's8-15']);
             //省市区选择框
             $this->returnFieldFormat('select', '省市区', 'data[province_id]',
                 $this->returnSelectFormat($district, 'name', 'id'), ['id' => 'province']
