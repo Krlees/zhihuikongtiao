@@ -93,7 +93,7 @@ class RoomController extends BaseController
                 );
             }
 
-            $this->returnFieldFormat('text', '房号', 'data[num]', '', ['dateType' => 'n']);
+            $this->returnFieldFormat('text', '房号', 'data[num]', '', ['dateType' => 'n','id'=>'room']);
             $this->returnFieldFormat('text', '房间名称', 'data[name]', '');
 
             $reponse = $this->returnFormFormat('新建房间', $this->getFormField());

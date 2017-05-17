@@ -91,5 +91,13 @@ class RoomService extends BaseService
         }
     }
 
+    public function getUserRoom($id)
+    {
+        $result = DB::table($this->tbName)->where('user_id',$id)->get()->toArray();
+        $result = cleanArrayObj($result);
+
+        return $result;
+    }
+
 
 }

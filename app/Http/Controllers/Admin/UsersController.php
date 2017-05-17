@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Presenters\Admin\UserPresenter;
+use App\Services\Admin\RoomService;
 use App\Services\Admin\UserService;
 use App\Traits\Admin\FormTraits;
 use Illuminate\Http\Request;
@@ -55,17 +56,17 @@ class UsersController extends BaseController
             $this->returnFieldFormat('select', '上级酒店', 'data[pid]',
                 $this->returnSelectFormat($userList, 'name', 'id'), ['id' => 'top']
             );
-            $this->returnFieldFormat('text', '酒店名称', 'data[name]', '', ['dataType' => 's1 - 48']);
-            $this->returnFieldFormat('text', '登陆账号', 'data[email]', '', ['dataType' => 's4 - 32']);
-            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['dataType' => 's4 - 18']);
-            $this->returnFieldFormat('text', '联系电话', 'data[phone]', '', ['dataType' => 's9 - 15']);
+            $this->returnFieldFormat('text', '酒店名称', 'data[name]', '', ['dataType' => 's1-48']);
+            $this->returnFieldFormat('text', '登陆账号', 'data[email]', '', ['dataType' => 's4-32']);
+            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['dataType' => 's4-18']);
+            $this->returnFieldFormat('text', '联系电话', 'data[phone]', '', ['dataType' => 's9-15']);
             //省市区选择框
             $this->returnFieldFormat('select', '省市区', 'data[province_id]',
                 $this->returnSelectFormat($district, 'name', 'id'), ['id' => 'province']
             );
             $this->returnFieldFormat('select', '', 'data[city_id]', [], ['id' => 'city']);
             $this->returnFieldFormat('select', '', 'data[area_id]', [], ['id' => 'area']);
-            $this->returnFieldFormat('text', '详细地址', 'address', '', ['dataType' => 's1 - 70']);
+            $this->returnFieldFormat('text', '详细地址', 'address', '', ['dataType' => 's1-70']);
 
             $roles = $this->user->getAllRoles();
             $extendField = $presenter->roleList($roles);
@@ -100,10 +101,10 @@ class UsersController extends BaseController
             $this->returnFieldFormat('select', '上级酒店', 'data[pid]',
                 $this->returnSelectFormat($userList, 'name', 'id', $info->pid), ['id' => 'top']
             );
-            $this->returnFieldFormat('text', '酒店名称', 'data[name]', $info->name, []);
-            $this->returnFieldFormat('text', '登陆账号', 'data[email]', $info->email, []);
-            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['placeholder' => '不修改密码请为空']);
-            $this->returnFieldFormat('text', '联系电话', 'data[phone]', $info->phone, []);
+            $this->returnFieldFormat('text', '酒店名称', 'data[name]', $info->name, ['dataType' => 's1-48']);
+            $this->returnFieldFormat('text', '登陆账号', 'data[email]', $info->email, ['dataType' => 's4-32']);
+            $this->returnFieldFormat('text', '密码', 'data[password]', '', ['placeholder' => '不修改密码请为空', 'dataType' => 's0-18']);
+            $this->returnFieldFormat('text', '联系电话', 'data[phone]', $info->phone, ['dataType' => 's9-15']);
             //省市区选择框
             $this->returnFieldFormat('select', '省市区', 'data[province_id]',
                 $this->returnSelectFormat($district, 'name', 'id', $info->province_id),
@@ -122,7 +123,7 @@ class UsersController extends BaseController
                 );
             }
 
-            $this->returnFieldFormat('text', '详细地址', 'address', $info->area_info, ['dataType' => 's1 - 70']);
+            $this->returnFieldFormat('text', '详细地址', 'address', $info->area_info, ['dataType' => 's1-70']);
 
             // 获取用户权限
             $roles = $this->user->getAllRoles();
@@ -154,5 +155,15 @@ class UsersController extends BaseController
     public function getSubSelect($pid)
     {
         return $this->user->getUserSelects($pid);
+    }
+
+    /**
+     * 获取子用户
+     * @Author Krlee
+     *
+     */
+    public function getUserRoom($id,RoomService $roomService)
+    {
+        return $roomService->getUserRoom($id);
     }
 }

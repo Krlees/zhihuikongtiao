@@ -52,6 +52,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('edit/{id}', 'UsersController@edit');
         Route::any('del', 'UsersController@del');
         Route::any('get-sub-user/{pid}', 'UsersController@getSubSelect');
+        Route::any('get-user-room/{id}', 'UsersController@getUserRoom');
     });
 
     // 菜单管理
