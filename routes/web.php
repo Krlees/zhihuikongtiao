@@ -104,6 +104,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('get-device-count/{deviceId?}', 'DeviceController@getDataCount');   // 存储每次设备返回的状态
         Route::any('save-device-count/{deviceId?}', 'DeviceController@setDataCount');   // 存储每次设备返回的状态
         Route::any('send-electric-cmd', 'DeviceController@sendElectricCmd');   // 存储每次设备返回的状态
+        Route::any('get-weather', 'DeviceController@getWeather');   // 存储每次设备返回的状态
     });
 
     // 电器

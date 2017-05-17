@@ -31,19 +31,19 @@ class AdminAuth
             $str = 'admin.index.dashboard';
         }
 
-        if (!Auth::user()->may($str) && !$request->ajax()) {
-//            if ($request->ajax() && ($request->getMethod() != 'GET')) {
-//                return response()->json([
-//                    'code' => 403,
-//                    'msg' => '您没有权限执行此操作'
-//                ]);
-//            } else {
-//                return response('权限不足.', 403);
-//            }
-
-            return response('权限不足.', 403);
-
-        }
+//        if (!Auth::user()->may($str) && !$request->ajax()) {
+////            if ($request->ajax() && ($request->getMethod() != 'GET')) {
+////                return response()->json([
+////                    'code' => 403,
+////                    'msg' => '您没有权限执行此操作'
+////                ]);
+////            } else {
+////                return response('权限不足.', 403);
+////            }
+//
+//            return response('权限不足.', 403);
+//
+//        }
 
         return $next($request);
     }

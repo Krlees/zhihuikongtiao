@@ -341,4 +341,12 @@ class DeviceController extends BaseController
         return ['RAW_SMARTHOME' => $cmd];
     }
 
+    public function getWeather()
+    {
+        $cityCode = $this->device->getNowCity();
+        $result = $this->device->getNowWeather($cityCode);
+
+        return $result;
+    }
+
 }

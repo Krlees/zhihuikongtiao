@@ -196,6 +196,31 @@
             flex: 100% 0 0;
             -webkit-box-flex: 100% 0 0;
         }
+
+        .best-weather {
+            width: 300px;
+            height: 300px;
+            float: left;
+            display: box;
+            display: -webkit-box;
+            display: -moz-box;
+            -webkit-box-pack: center;
+            -moz-box-pack: center;
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            background-image: url("{{asset('hplus/css/images/control.png')}}")
+        }
+
+        #best-temp {
+            color: #EA4D3C;
+            padding-left: 33px;
+            font-size: 9rem;
+        }
+
+        #best-temp i {
+            font-size: 3rem;
+            vertical-align: text-top;
+        }
     </style>
 </head>
 
@@ -235,7 +260,7 @@
                     </h5>
                 </div>
                 <div class="ibox-content">
-                    <h1><i class="room_temp">26</i><b>℃</b></h1>
+                    <h1><i class="room_temp"></i><b>℃</b></h1>
                     <div class="text">
                         <span class="text-time">2017年4月14日</span>
                         <span class="text-weather">晴</span>
@@ -282,8 +307,13 @@
             </div>
             <div class="ibox-content">
                 <div class="content">
-                    <img style="float: left;width: 300px;height: 300px;" src="{{asset('hplus/css/images/control.png')}}"
-                         alt="">
+                    {{--<img style="float: left;width: 300px;height: 300px;" "--}}
+                    {{--alt="">--}}
+                    <div class="best-weather">
+                        <p id="best-temp">25<i>℃</i></p>
+                        <p style="position: relative;top: 5rem;left: -7rem;font-size: 2rem;">70%</p>
+                    </div>
+
                     <ul class="content-desc">
                         <li><span>计算取值：</span></li>
                         <li>
@@ -313,7 +343,7 @@
                     </ul>
                 </div>
                 {{--<div class="bottom">--}}
-                    {{--备注:60%取值24℃，70%取值25℃，80%取值26℃--}}
+                {{--备注:60%取值24℃，70%取值25℃，80%取值26℃--}}
                 {{--</div>--}}
             </div>
         </div>
@@ -443,6 +473,16 @@
 
 
     $(function () {
+
+        // 调用当前天气
+        $.getJSON("{{url('admin/device/get-weather')}}", {}, function (res) {
+            var temps = res.weatherinfo.temp1.substr(0, 2);
+            $(".room_temp").text(temps);
+            $(".room_humidity").text(res.weatherinfo.temp2.substr(0, 2));
+            $(".text-weather").text(res.weatherinfo.weather);
+
+            $("#best-temp").html(Math.ceil((temps - 0) / 0.7) + '<i>℃</i>');
+        });
 
         gizwitsws = newObj();
         gizwitsws.init();

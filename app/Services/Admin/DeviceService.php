@@ -150,7 +150,7 @@ class DeviceService extends BaseService
             if ($param['area_id']) {
                 $where[] = ['area_id', '=', $param['area_id']];
             }
-            if(isset($param['username'])){
+            if (isset($param['username'])) {
                 $where[] = ['name', '=', $param['username']];
             }
 
@@ -284,6 +284,32 @@ class DeviceService extends BaseService
     }
 
     /**
+     * 定位当前的城市
+     * @Author Krlee
+     *
+     */
+    public function getNowCity()
+    {
+        $url = 'http://api.map.baidu.com/location/ip?ak=pByihVCvPliqWIRAOOhPLtue&coor=bd09ll';
+        $result = curl_do($url);
+        $res = json_decode($result, true);
+
+        $city = $res['content']['address_detail']['city'];
+        $city = str_replace("市", "", $city);
+
+        $result = DB::table('weather')->where('name', $city)->first(['code']);
+
+        return $result->code;
+    }
+
+    public function getNowWeather($cityCode)
+    {
+        $url = 'http://www.weather.com.cn/data/cityinfo/' . $cityCode . '.html';
+
+        return curl_do($url);
+    }
+
+    /**
      * 添加设备
      * @Author Krlee
      *
@@ -292,7 +318,7 @@ class DeviceService extends BaseService
     {
         $gizwitsCfg = Config::get('gizwits.cfg');
 
-        $gizwit_id = array_get($data,'user_id') ?: \Auth::user()->id;
+        $gizwit_id = array_get($data, 'user_id') ?: \Auth::user()->id;
         if (!$gizwit_id) {
             return false;
         }
