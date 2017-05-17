@@ -638,8 +638,8 @@
         var cmd = value.attrs.RAW_SMARTHOME;
 
         if (cmd[3] == 80) {
-            $(".room_temp").text(cmd[26]);
-            $(".room_humidity").text(cmd[28]);
+            $(".now_temp").text(cmd[24]);
+            $(".now_humidity").text(cmd[26]);
         }
 
         // 判断是否同步
@@ -647,8 +647,7 @@
             layer.msg("同步成功");
             is_sync = true;
 
-            $(".now_temp").text(cmd[22]);
-            $(".now_humidity").text(cmd[22]);
+
             $(".temp").val(cmd[22]);
 
             cmd = cmd.join(",");
