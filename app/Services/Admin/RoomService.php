@@ -81,7 +81,7 @@ class RoomService extends BaseService
     {
         try {
             $kk = DB::transaction(function () use ($ids) {
-                DB::table('devicee')->whereIn('room_id', $ids)->delete();
+                DB::table('device')->whereIn('room_id', $ids)->delete();
                 DB::table($this->tbName)->whereIn('id', $ids)->delete();
             });
 
