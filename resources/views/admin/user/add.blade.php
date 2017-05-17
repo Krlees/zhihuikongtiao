@@ -12,15 +12,7 @@
 
 
 <script src="{{asset('js/components/district.js')}}"></script>
-<script type="text/javascript">
-    {{--$(function () {--}}
-        {{--$('#sub_chosen').hide();--}}
-        {{--$('#top').change(function () {--}}
-            {{--var id = $(this).val();--}}
-            {{--getSub("{{url('admin/user/get-sub-user')}}", id, 'sub');--}}
-        {{--});--}}
-    {{--});--}}
-</script>
+
 
 </body>
 </html>

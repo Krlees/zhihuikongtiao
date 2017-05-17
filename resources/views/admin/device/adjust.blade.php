@@ -357,7 +357,7 @@
                             </button>
                             <button data-key="3" class="mode btn-adjust btn btn-white" type="button">去湿
                             </button>
-                            <button data-key="5" class="modebtn-adjust btn btn-white" type="button">热
+                            <button data-key="5" class="mode btn-adjust btn btn-white" type="button">热
                             </button>
                         </div>
                     </div>
