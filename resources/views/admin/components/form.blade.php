@@ -4,7 +4,9 @@
 <link rel="stylesheet" type="text/css" href="{{asset('hplus/css/Validform_v5.3.2.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('hplus/css/plugins/webuploader/webuploader.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('hplus/css/demo/webuploader-demo.css')}}">
+<style>
 
+</style>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
@@ -57,6 +59,7 @@
 <script src="{{asset('hplus/js/content.js?v=1.0.0')}}"></script>
 <script src="{{asset('hplus/js/Validform_v5.3.2_min.js')}}"></script>
 <script src="{{asset('hplus/js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
+<script src="{{asset('hplus/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
 <script>
     $('select.chosen-select').chosen({width: "150px"});
 
@@ -81,7 +84,7 @@
                 }
             }
             else {
-                layer.msg('操作失败');
+                layer.msg(data.msg);
             }
             $('#Validform_msg').hide();
 
@@ -89,5 +92,6 @@
 
     });
     $valid.tipmsg.w["zh"] = "请输入中文字符！";
+
 
 </script>

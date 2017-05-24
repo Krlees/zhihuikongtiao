@@ -13,6 +13,7 @@ use App\Services\Admin\DeviceService;
 use App\Services\Admin\QianhaiService;
 use App\Services\Admin\RoomService;
 use App\Services\Admin\UserService;
+use App\Traits\Admin\GizwitTraits;
 use App\Traits\Admin\QianhaiMdl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ class DeviceController extends BaseController
 {
 
     use QianhaiMdl;
+    use GizwitTraits;
 
     protected $device;
 
@@ -147,52 +149,6 @@ class DeviceController extends BaseController
 
         $results = $this->device->delData($ids);
         return $results ? $this->responseData(0, "操作成功", $results) : $this->responseData(200, "操作失败");
-    }
-
-    /**
-     * 能耗统计
-     * @Author Krlee
-     *
-     */
-    public function chart(Request $request, UserService $userService)
-    {
-
-        if ($request->ajax()) {
-
-            $param = $this->cleanAjaxPageParam($request->all());
-            $results = $this->device->getAjaxChartList(array_get($param, 'data'));
-
-            return $this->responseAjaxTable($results['total'], $results['rows']);
-
-        } else {
-            $provinceData = $this->device->getDistrict(0);
-            foreach ($provinceData as $k => $v) {
-                $provinceSelect[$v['id']] = $v['name'];
-            }
-            ksort($provinceSelect);
-
-            $user2 = $userService->getLevelUser(1);
-            $user3 = $userService->getLevelUser(2);
-            foreach ($user2 as $v) {
-                $user2_select[$v['id']] = $v['name'];
-            }
-            foreach ($user3 as $v) {
-                $user3_select[$v['id']] = $v['name'];
-            }
-            $user2_select[0] = '-请选择-';
-            $user3_select[0] = '-请选择-';
-            ksort($user2_select);
-            ksort($user3_select);
-
-            $chartData[0] = $this->device->getChartForHour(2, 'use_energy');
-            $chartData[1] = $this->device->getChartForHour(2, 'no_use_energy');
-
-            $reponse = $this->returnSearchFormat(url('admin/device/chart'));
-
-            // 根据不用角色展示不同模板
-            return view('admin/device/chart', compact('provinceSelect', 'reponse', 'user2_select', 'user3_select', 'chartData'));
-
-        }
     }
 
     /**
@@ -348,5 +304,16 @@ class DeviceController extends BaseController
 
         return $result;
     }
+
+    public function getUserToken(Request $request)
+    {
+        $appId = Config::get('gizwits.cfg.appid');
+        $gizwitId = $request->input('phone_id');
+        $result = $this->createGizwitUser($appId,$gizwitId);
+
+        return $result;
+    }
+
+
 
 }

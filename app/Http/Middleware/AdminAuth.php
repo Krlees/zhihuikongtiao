@@ -23,11 +23,15 @@ class AdminAuth
             return $next($request);
         }
 
-        $arr = explode("/", Route::getCurrentRoute()->uri());
-        $str = array_get($arr, 0) . '.' . array_get($arr, 1) . '.' . array_get($arr, 2);
-        if ($str == 'admin.index.') {
+        $str = "";
+        $arr = explode("/", $request->path());
+        foreach ($arr as $v){
+            $str .= $v.".";
+        }
+        $str = trim($str,".");
+        if ($str == 'admin.index') {
             $str = 'admin.index.index';
-        } elseif ($str == 'admin.dashboard.') {
+        } elseif ($str == 'admin.dashboard') {
             $str = 'admin.index.dashboard';
         }
 

@@ -179,16 +179,23 @@ GizwitsWS.prototype.setLoginParams = function(heartbeatTime, keepalive, autoSubs
 // http functions
 //=========================================================
 GizwitsWS.prototype._getUserToken = function() {
+
+
+
   var me = this;
-  var url = "https://{0}/app/users".format(me._apiHost);
+  var url = "/admin/device/get-user-token";
+
+  // var url = "https://{0}/app/users".format(me._apiHost)
   $.ajax(url, {
-      type: "POST",
+      type: "GET",
       contentType: "application/json",
       headers: { "X-Gizwits-Application-Id": me._appId },
       dataType: "json",
-      data: "{\"phone_id\":\"" + me._openId + "\",\"lang\":\"en\"}"
+      //data: "{\"phone_id\":\"" + me._openId + "\",\"lang\":\"en\"}"
+      data: {"phone_id": me._openId}
     })
     .done(function(result) {
+      console.log(result)
       me._userId = result.uid;
       me._userToken = result.token;
       var limit = 20;

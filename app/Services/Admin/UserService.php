@@ -22,13 +22,13 @@ class UserService extends BaseService
      * @param $param
      * @return array
      */
-    public function ajaxUserList($param)
+    public function ajaxUserList($id, $param)
     {
-        $where = [];
+        $where[] = ['level', '=', $id, 'AND'];
         if (isset($param['search'])) {
-            $where = [
-                ['name', 'like', "%{$param['search']}%",'OR'],
-                ['email', 'like', "%{$param['search']}%",'OR'],
+            $where[] = [
+                ['name', 'like', "%{$param['search']}%", 'OR'],
+                ['email', 'like', "%{$param['search']}%", 'OR'],
             ];
         }
 //        $where[] = ['is_super','<>',1];
@@ -53,7 +53,7 @@ class UserService extends BaseService
      */
     public function getUserSelects($pid = 0)
     {
-        return $this->user->findWhere(['pid' => $pid,'is_super'=>0])->toArray();
+        return $this->user->findWhere(['pid' => $pid, 'is_super' => 0])->toArray();
     }
 
     /**
@@ -62,9 +62,9 @@ class UserService extends BaseService
      *
      * @param int $level
      */
-    public function getLevelUser($level=1,$where=[])
+    public function getLevelUser($level = 1, $where = [])
     {
-        return $this->user->findWhere(['level' => $level,'is_super'=>0])->toArray();
+        return $this->user->findWhere(['level' => $level, 'is_super' => 0])->toArray();
     }
 
     /**
@@ -102,7 +102,7 @@ class UserService extends BaseService
     /**
      * 创建数据
      */
-    public function createData($param)
+    public function createData($level, $param)
     {
         $data = $param['data'];
         $province = $this->getDistrictName($data['province_id']);
@@ -111,7 +111,7 @@ class UserService extends BaseService
 
         $data['password'] = bcrypt($data['password']);
         $data['area_info'] = $province . ' ' . $city . ' ' . $area . ' ' . $param['address'];
-        $data['level'] = ($data['pid'] == 0) ? 1 : 2;
+        $data['level'] = $level;
 
         if (isset($param['role'])) {
             $b = $this->user->create($data)->roles()->sync($param['role']);
@@ -140,7 +140,12 @@ class UserService extends BaseService
         if (!isset($param['role'])) {
             $param['role'] = [];
         }
-        $data['level'] = ($data['pid'] == 0) ? 1 : 2;
+
+        $province = $this->getDistrictName($data['province_id']);
+        $city = $this->getDistrictName($data['city_id']);
+        $area = $this->getDistrictName($data['area_id']);
+
+        $data['area_info'] = $province . ' ' . $city . ' ' . $area . ' ' . $param['address'];
 
         $b = $this->user->update($data, $id)->roles()->sync($param['role']);
 
@@ -186,8 +191,6 @@ class UserService extends BaseService
         }
         return $arr;
     }
-
-
 
 
 }

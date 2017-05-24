@@ -109,12 +109,11 @@ if (!function_exists('objToArr')) {
      */
     function cleanArrayObj($arr)
     {
-        if(is_object($arr)){
+        if (is_object($arr)) {
             $arr = get_object_vars($arr);
-        }
-        elseif (is_array($arr)){
-            foreach ($arr as $k=>$v){
-                if(is_object($v)){
+        } elseif (is_array($arr)) {
+            foreach ($arr as $k => $v) {
+                if (is_object($v)) {
                     $arr[$k] = get_object_vars($v);
                 }
             }
@@ -144,6 +143,93 @@ if (!function_exists('curl_do')) {
         return $res;
     }
 }
+
+/**
+ * 获取配置
+ * @param <string> $classify 分类名
+ * @param <string> $name 配置名
+ * @return <string|array>
+ */
+function get_setting($classify = '', $key = '')
+{
+
+    $setting = array();
+    $data = \DB::table('setting')->get()->toArray();
+    $data = cleanArrayObj($data);
+    foreach ($data as $item) {
+        $setting[$item['classify']][$item['key']] = $item['value'];
+    }
+
+    return $classify ? ($key ? $setting[$classify][$key] : $setting[$classify]) : $setting;
+}
+
+/**
+ * 保存配置
+ * @param <string> $classify 分类名
+ * @param <string> $name 配置键
+ * @param <mixed> $value 配置值
+ * @return <bool>
+ */
+function set_setting($classify, $key, $value)
+{
+    $mod_setting = \DB::table('setting');
+    $count = \DB::table('setting')->where(array('key' => $key, 'classify' => $classify))->count();
+    if ($count > 0) {
+        try {
+            $affected = $mod_setting->where(['key' => $key, 'classify' => $classify])->update(['value' => $value]);
+            return $affected ? true : false;
+        } catch (\Exception $e) {
+            return false;
+        }
+
+    } else {
+        try {
+            $affected = $mod_setting->insert(['key' => $key, 'value' => $value, 'classify' => $classify]);
+            return $affected ? true : false;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+}
+
+if (!function_exists('obj2arr')) {
+    /**
+     * 将pdo查询的结果对象转为数组array
+     * @Author Krlee
+     *
+     * @param $obj
+     * @return array
+     */
+    function obj2arr($obj)
+    {
+        return json_decode(json_encode($obj), true);
+    }
+}
+
+if (!function_exists('get_future_datetime')) {
+    /**
+     * desc
+     * @Author Krlee
+     *
+     * @param $nowDate
+     * @param $days       未来第几天
+     * @param string $do 未来还是之前，+代表未来,-代表之前
+     */
+    function get_future_datetime($nowDate = null, $days = 1, $do = "+")
+    {
+        if ($do != "+" || $do != "-") {
+            $do = "+";
+        }
+
+        if (is_null($nowDate)) {
+            $nowDate = time();
+        }
+
+        return date("Y-m-d H:i:s", strtotime("{$do} {$days}days", strtotime($nowDate)));
+    }
+}
+
 
 
 

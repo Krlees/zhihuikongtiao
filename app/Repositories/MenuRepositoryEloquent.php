@@ -35,7 +35,7 @@ class MenuRepositoryEloquent extends BaseRepository
     {
         $menus = $this->model->where(['pid' => 0, 'is_show' => 1])->orderBy('sort', 'desc')->get();
         foreach ($menus as $k => $v) {
-            $v->sub = $this->model->where(['pid' => $v['id']])->get();
+            $v->sub = $this->model->where(['pid' => $v['id'], 'is_show' => 1])->get();
         }
 
         return $menus;

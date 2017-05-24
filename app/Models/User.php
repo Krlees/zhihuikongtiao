@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'province_id', 'city_id', 'area_id', 'area_info', 'phone', 'pid', 'level'
+        'name', 'email', 'password', 'province_id', 'city_id', 'area_id', 'area_info', 'phone', 'pid', 'level', 'contact_name', 'tel'
     ];
 
     /**
@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Config ::get('entrust.role'), Config::get('entrust.role_user_table'), Config::get('entrust.user_foreign_key'), Config::get('entrust.role_foreign_key'));
+        return $this->belongsToMany(Config::get('entrust.role'), Config::get('entrust.role_user_table'), Config::get('entrust.user_foreign_key'), Config::get('entrust.role_foreign_key'));
     }
 //
 //    public function hasRole($name)

@@ -47,8 +47,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
     // 管理员
     Route::group(['prefix' => 'user'], function () {
-        Route::any('index', 'UsersController@index');
-        Route::any('add', 'UsersController@add');
+        Route::any('index/{level}', 'UsersController@index');
+        Route::any('add/{level}', 'UsersController@add');
         Route::any('edit/{id}', 'UsersController@edit');
         Route::any('del', 'UsersController@del');
         Route::any('get-sub-user/{pid}', 'UsersController@getSubSelect');
@@ -105,6 +105,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('save-device-count/{deviceId?}', 'DeviceController@setDataCount');   // 存储每次设备返回的状态
         Route::any('send-electric-cmd', 'DeviceController@sendElectricCmd');   // 存储每次设备返回的状态
         Route::any('get-weather', 'DeviceController@getWeather');   // 存储每次设备返回的状态
+        Route::any('get-scene', 'DeviceController@getScene');   // 获取情景模式
+        Route::any('get-user-token', 'DeviceController@getUserToken');   // 获取用户
     });
 
     // 电器
@@ -117,6 +119,32 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('get-brand/{ele_id}', 'ElectricController@getBrand');
     });
 
+    // 策略
+    Route::group(['prefix' => 'strategy'], function () {
+        Route::any('index', 'StrategyController@index');
+        Route::any('add', 'StrategyController@add');
+        Route::any('del', 'StrategyController@del');
+        Route::any('night', 'StrategyController@night');
+        Route::any('use-chart', 'StrategyController@useChart');
+    });
+
+    // 统计分析
+    Route::group(['prefix' => 'chart'], function () {
+        Route::any('energy',  'ChartController@energy');
+        Route::any('report',  'ChartController@report');
+        Route::any('history', 'ChartController@history');
+    });
+
+    // 设置
+    Route::group(['prefix' => 'setting'], function () {
+        Route::any('use-desc/{level}',  'SettingController@useDesc');
+    });
+
+    // 消息
+    Route::group(['prefix' => 'message'], function () {
+        Route::any('index/{isRead}',  'MessageController@index');
+        Route::any('del',  'MessageController@del');
+    });
 
 });
 

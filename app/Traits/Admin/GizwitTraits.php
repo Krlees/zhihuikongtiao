@@ -11,6 +11,8 @@
 namespace App\Traits\Admin;
 
 
+use Illuminate\Support\Facades\Cache;
+
 trait GizwitTraits
 {
 
@@ -24,14 +26,21 @@ trait GizwitTraits
      */
     public function createGizwitUser($appId, $gizwitId)
     {
+        $result = Cache::store('file')->get('user_token_' . $appId . $gizwitId);
+        if (!empty($result)) {
+            return $result;
+        }
+
         $header = [
             "x-gizwits-application-id:" . $appId
         ];
         $data = ['phone_id' => $gizwitId];
 
         $res = curl_do('http://api.gizwits.com/app/users', $header, json_encode($data));
+        $result = json_decode($res, true);
+        Cache::store('file')->put('user_token_' . $appId . $gizwitId, $result, 6 * 24 * 60);
 
-        return json_decode($res, true);
+        return $result;
     }
 
     /**
@@ -97,6 +106,24 @@ trait GizwitTraits
         $body = ['RAW_SMARTHOME' => $cmd];
 
         $res = curl_do('http://api.gizwits.com/app/control/' . $did, $header, json_encode($body));
+
+        return json_decode($res, true);
+    }
+
+    /**
+     * 获取历史数据
+     * @Author Krlee
+     *
+     */
+    public function getHistoryData($appId, $userToken, $did)
+    {
+        $url = 'http://api.gizwits.com/app/devices/' . $did . '/raw_data?type=online&start_time=1495532386&end_time=1495618813&skip=0&limit=100&sort=desc';
+        $header = [
+            'x-gizwits-application-id: ' . $appId,
+            'x-gizwits-user-token: ' . $userToken
+        ];
+
+        $res = curl_do($url, $header);
 
         return json_decode($res, true);
     }

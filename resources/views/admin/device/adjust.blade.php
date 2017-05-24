@@ -359,14 +359,25 @@
             <div class="ibox-content adjust-content">
                 <div class="row">
                     {{--<div class="col-md-2">--}}
-                    {{--<label class="control-label">延迟调整</label>--}}
-                    {{--<div class="btn-group">--}}
-                    {{--<button class="btn btn-white timer-reduce" type="button">-</button>--}}
-                    {{--<input type="text" class="col-sm-1 form-control" id="timer-value" data-index="5"--}}
-                    {{--style="border-radius: 0" value="0">--}}
-                    {{--<button class="btn btn-white timer-add" type="button">+</button>--}}
+                        {{--<label class="control-label">情景模式</label>--}}
+                        {{--<div class="btn-group">--}}
+                            {{--<button class="btn btn-white timer-reduce" type="button">-</button>--}}
+                            {{--<input type="text" class="col-sm-1 form-control" id="timer-value" data-index="5"--}}
+                                   {{--style="border-radius: 0" value="0">--}}
+                            {{--<button class="btn btn-white timer-add" type="button">+</button>--}}
+                        {{--</div>--}}
                     {{--</div>--}}
-                    {{--</div>--}}
+                    <div class="col-md-2">
+                        <label class="control-label">情景模式</label>
+                        <div class="btn-group">
+                            <button data-key="1" class="scene_mode btn-adjust btn btn-white" type="button">经济
+                            </button>
+                            <button data-key="2" class="scene_mode btn-adjust btn btn-white" type="button">舒适
+                            </button>
+                            <button data-key="3" class="scene_mode btn-adjust btn btn-success" type="button">环保
+                            </button>
+                        </div>
+                    </div>
                     <div class="col-md-2">
                         <label class="control-label">风速调节</label>
                         <div class="btn-group">
@@ -470,22 +481,32 @@
     var is_sync = false;
     var power;  // 开关
     var roomState = true;
+    var bestTemp = 0;
 
 
     $(function () {
 
         // 调用当前天气
         $.getJSON("{{url('admin/device/get-weather')}}", {}, function (res) {
-            var temps = res.weatherinfo.temp1.substr(0, 2);
+            var temps = res.weatherinfo.temp2.substr(0, 2);
             $(".room_temp").text(temps);
-            $(".room_humidity").text(res.weatherinfo.temp2.substr(0, 2));
+            $(".room_humidity").text(res.weatherinfo.temp1.substr(0, 2));
             $(".text-weather").text(res.weatherinfo.weather);
 
-            $("#best-temp").html(Math.ceil((temps - 0) / 0.7) + '<i>℃</i>');
+            bestTemp = Math.ceil((temps - 0) * 0.7);
+            $("#best-temp").html(bestTemp + '<i>℃</i>');
+
         });
 
         gizwitsws = newObj();
         gizwitsws.init();
+        
+        // 情景模式
+        $(".scene_mode").on('click',function () {
+            $.getJSON("{{url('admin/device/get-scene')}}",{},function (res) {
+
+            });
+        })
 
         // JS控件
         $("#power").bootstrapSwitch();
@@ -570,14 +591,15 @@
         var temp = $(".temp").val(); // 温度
         var wind_direction = $(".wind_direction.btn-success").attr('data-key'); // 风向
         var auto_wind_direction = $(".auto_wind_direction.btn-success").attr('data-key'); // 自动风向
-        var mode = $(".mode").attr('data-key'); // 模式
-        var wind_rate = $(".wind_rate").attr('data-key'); // 风速调节
+        var mode = $(".mode.btn-success").attr('data-key'); // 模式
+        var wind_rate = $(".wind_rate.btn-success").attr('data-key'); // 风速调节
         var times = [];
         var power = $('#power').bootstrapSwitch('state');
         $(".times.btn-success").each(function (i, v) {
             times.push($(v).attr('data-key'));
         });
 
+        console.log($(".wind_rate.btn-success"));
         sock = true;
         $.post("{{url('admin/device/get-gizwit-cmd')}}" + "/" + deviceId, {
             '_token': "{{csrf_token()}}",
@@ -680,6 +702,13 @@
         if (cmd[3] == 80) {
             $(".now_temp").text(cmd[24]);
             $(".now_humidity").text(cmd[26]);
+
+            // 当前室内温度等于设置的温度
+            if (cmd[24] == $(".temp").val()) {
+                $(".temp").val(bestTemp);
+
+                ajaxCmd();
+            }
         }
 
         // 判断是否同步
@@ -693,9 +722,9 @@
             cmd = cmd.join(",");
 
             // 记录第一次同步成功返回的状态
-            $.post('{{url("admin/device/save-cmd")}}', {cmd: cmd, '_token': "{{csrf_token()}}"}, function (result) {
+            {{--$.post('{{url("admin/device/save-cmd")}}', {cmd: cmd, '_token': "{{csrf_token()}}"}, function (result) {--}}
 
-            });
+            {{--});--}}
 
         }
         else {

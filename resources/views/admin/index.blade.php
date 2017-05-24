@@ -60,7 +60,7 @@
 
                 @foreach ($menus as $menu)
                     <li>
-                        <a href="{{url($menu->url)}}">
+                        <a @if($menu->url != '#')class="J_menuItem"@endif href="{{url($menu->url)}}">
                             <i class="{{$menu->icon}}"></i>
                             <span class="nav-label">{{$menu->name}}</span>
                             <span class="fa arrow"></span>
@@ -179,9 +179,9 @@
             <a href="{{url('logout')}}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{url('admin/user/index')}}"
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{url('admin/chart/energy')}}"
                     frameborder="0"
-                    data-id="{{url('admin/dashboard')}}" seamless></iframe>
+                    data-id="{{url('admin/chart/energy')}}" seamless></iframe>
         </div>
         <div class="footer">
             <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
