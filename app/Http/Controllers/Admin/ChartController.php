@@ -73,21 +73,34 @@ class ChartController extends BaseController
         }
     }
 
-    public function report()
+    public function report(Request $request)
     {
+        if ($request->ajax()) {
 
+            $results = $this->chart->getAjaxChartList();
+
+            return $this->responseAjaxTable($results['total'], $results['rows']);
+
+        } else {
+
+            $reponse = $this->returnSearchFormat(url('admin/chart/report'));
+
+            // 根据不用角色展示不同模板
+            return view('admin/chart/report', compact('reponse'));
+
+        }
     }
 
     public function history()
     {
         $cfg = \Config::get('gizwits.cfg');
         $gizwitId = \Auth::user()->id;
-        $gizUsers = $this->createGizwitUser($cfg['appid'],$gizwitId);
+        $gizUsers = $this->createGizwitUser($cfg['appid'], $gizwitId);
 //        if( empty($gizUsers)){
 //            return [];
 //        }
 
-        $result = $this->getHistoryData($cfg['appid'],$gizUsers['token'],'fqvDqFzD3vakpz8P3VUXVY');
+        $result = $this->getHistoryData($cfg['appid'], $gizUsers['token'], 'fqvDqFzD3vakpz8P3VUXVY');
         dd($result);
     }
 }
