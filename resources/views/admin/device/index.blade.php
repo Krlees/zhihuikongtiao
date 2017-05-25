@@ -41,6 +41,20 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     @component('admin/components/table',$reponse)
     @endcomponent
+
+    <script>
+        var Append = '<a id="adjust-action" href="javascript:;" class="btn btn-outline btn-default" title="">调控</a>';
+        $("#toolbar").append(Append);
+
+        $(document).on('click', '#adjust-action', function () {
+            var ids = getIdSelections();
+            ids = ids.join(",");
+
+            window.location.href = "{{url('admin/device/adjustAll')}}" + "/" + ids;
+        })
+
+
+    </script>
 </div>
 @include('admin.common.modal')
 

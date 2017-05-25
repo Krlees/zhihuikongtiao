@@ -66,6 +66,19 @@ class DeviceController extends BaseController
         return view('admin/device/adjust', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
     }
 
+    public function adjustAll($ids, Request $request)
+    {
+        if (strpos($ids, ",") !== false) {
+            $ids = explode(",", $ids);
+        } else {
+            $ids[] = $ids;
+        }
+
+
+
+
+    }
+
     /**
      * 添加并绑定设备
      * @Author Krlee
@@ -289,7 +302,7 @@ class DeviceController extends BaseController
         $cmd[5] = 1;//类型
         $cmd[6] = 1;//自定键值, 1为开机
         $cmd = $qianhaiService->check_sum($cmd, $cmd[2]);
-        foreach ($cmd as $k=>$v){
+        foreach ($cmd as $k => $v) {
             $cmd[$k] = (int)$v;
         }
 
@@ -309,11 +322,10 @@ class DeviceController extends BaseController
     {
         $appId = Config::get('gizwits.cfg.appid');
         $gizwitId = $request->input('phone_id');
-        $result = $this->createGizwitUser($appId,$gizwitId);
+        $result = $this->createGizwitUser($appId, $gizwitId);
 
         return $result;
     }
-
 
 
 }

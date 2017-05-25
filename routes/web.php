@@ -126,6 +126,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('del', 'StrategyController@del');
         Route::any('night', 'StrategyController@night');
         Route::any('use-chart', 'StrategyController@useChart');
+        Route::any('set-strategy-log', 'StrategyController@setStrategyLog');
     });
 
     // 统计分析
@@ -138,6 +139,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     // 设置
     Route::group(['prefix' => 'setting'], function () {
         Route::any('use-desc/{level}',  'SettingController@useDesc');
+        Route::any('base',  'SettingController@base');
     });
 
     // 消息

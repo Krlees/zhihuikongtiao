@@ -9,13 +9,35 @@
 namespace App\Services\Admin;
 
 use App\Services\Admin\BaseService;
+use App\Traits\Admin\UserTraits;
 use DB;
+
 class ChartService extends BaseService
 {
+    use UserTraits;
 
-    public function getReport()
+    public function getAjaxReport($param)
     {
+        $userId = $this->getCurrentUser($param);
+        $where = "";
+        if (isset($param['start'])) {
+            $where = "and date > '{$param['start']}' ";
+        }
+        if (isset($param['end'])) {
+            $where = "and date < '{$param['end']}' ";
+        }
 
+        $result = DB::select("select a.*,b.name as device_name,(select name from users u where u.id=b.user_id) as username from device_air_use_log a JOIN device b on a.device_id=b.id where b.user_id= :user_id {$where} limit {$param['offset']},{$param['limit']}", ['user_id' => $userId]);
+        $result = obj2arr($result);
+
+        $baseCfg = get_setting('base', 'base');
+        $baseCfg = json_decode($baseCfg, true);
+        foreach ($result as $k => $v) {
+            $result[$k]['comsume'] = $baseCfg['comsume'] * $v['all_time'];
+            $result[$k]['fee'] = $baseCfg['comsume'] * $baseCfg['fee'] * $v['all_time'];
+        }
+
+        return ['total' => count($result), 'rows' => $result];
     }
 
     /**
@@ -25,34 +47,11 @@ class ChartService extends BaseService
      */
     public function getAjaxChartList($param)
     {
-        if (\Auth::user()->hasRole('admin') && $param) {
-            $where = [];
-            if ($param['province_id']) {
-                $where[] = ['province_id', '=', $param['province_id']];
-            }
-            if ($param['city_id']) {
-                $where[] = ['city_id', '=', $param['city_id']];
-            }
-            if ($param['area_id']) {
-                $where[] = ['area_id', '=', $param['area_id']];
-            }
-            if (isset($param['username'])) {
-                $where[] = ['name', '=', $param['username']];
-            }
-
-            // 查询酒店
-            $userId = DB::table('users')->where($where)->first(['id']);
-            $userId = $userId->id;
-
-        } elseif (array_get($param, 'user_id')) {
-            $userId = $param['user_id'];
-        } else {
-            $userId = \Auth::user()->id;
-        }
+        $userId = $this->getCurrentUser($param);
 
         // 初始化返回格式数据
         for ($i = 0; $i <= 4; $i++) {
-            $result[$i] = ['use_energy' => 0, 'no_use_energy' => 0, 'all_time' => 0];
+            $result[$i] = ['use_energy' => 0, 'all_time' => 0];
         }
         $result[0]['times'] = '总时';
         $result[1]['times'] = '一年';
@@ -75,7 +74,7 @@ class ChartService extends BaseService
             return ['rows' => [], 'total' => 0];
         }
 
-        $sql = DB::raw("select date,year(date) as year,month(date) as month,sum(use_energy) as use_energy,sum(no_use_energy) as no_use_energy,sum(all_time) as all_time
+        $sql = DB::raw("select date,year(date) as year,month(date) as month,sum(use_energy) as use_energy,sum(all_time) as all_time
                         from device_air_use_log 
                         where date>='" . date('Y-01-01') . "' and device_id in (" . implode(",", $ids) . ")
                         group by year,month
@@ -119,9 +118,9 @@ class ChartService extends BaseService
                 ->where('created_at', '>=', $whereDate)
                 ->where('created_at', '<=', $nowDate)
                 ->count();
-            $result[$k]['use_energy_count'] = $v['use_energy'] - $v['no_use_energy'];
             $result[$k]['use_energy_scale'] = $v['use_energy'] ? (floor($v['use_energy'] / $v['all_time'] * 10000) / 10000 * 100) . '%' : 0;
         }
+
 
 
         return ['rows' => $result, 'total' => 1];
@@ -135,7 +134,6 @@ class ChartService extends BaseService
     private function _helpChart($result, $v, $k)
     {
         $result[$k]['use_energy'] += $v->use_energy;
-        $result[$k]['no_use_energy'] += $v->no_use_energy;
         $result[$k]['all_time'] += $v->all_time;
 
         return $result[$k];
@@ -149,13 +147,14 @@ class ChartService extends BaseService
      * @param $field
      * @return array
      */
-    public function getChartForHour($hour = 1, $field)
+    public function getChartForHour($param, $hour = 1, $field)
     {
         if (!$field)
             return [];
 
-        $data = $this->getChartHour();
-        if( empty($data)){
+        $userId = $this->getCurrentUser($param);
+        $data = $this->getChartHour($userId);
+        if (empty($data)) {
             return [];
         }
 
@@ -179,10 +178,8 @@ class ChartService extends BaseService
      * @Author Krlee
      *
      */
-    public function getChartHour()
+    public function getChartHour($userId)
     {
-        $userId = \Auth::user()->id;
-
         $deviceIds = DB::table('device')->where(['user_id' => $userId])->get(['device.id'])->toArray();
         $deviceIds = cleanArrayObj($deviceIds);
         $ids = array_column($deviceIds, 'id');
@@ -190,7 +187,7 @@ class ChartService extends BaseService
             return [];
         }
 
-        $sql = DB::raw("select date,year(date) as year,month(date) as month,day(date) as day,hour(date) as hour,sum(use_energy) as use_energy,sum(no_use_energy) as no_use_energy,sum(all_time) as all_time
+        $sql = DB::raw("select date,year(date) as year,month(date) as month,day(date) as day,hour(date) as hour,sum(use_energy) as use_energy,sum(all_time) as all_time
                         from device_air_use_log 
                         where date>='" . date('Y-01-01') . "' and date<'" . date('Y-m-d 23:59:59') . "' and device_id in (" . implode(",", $ids) . ")
                         group by year,month,day,hour
@@ -200,8 +197,6 @@ class ChartService extends BaseService
 
         return $chartdata;
     }
-
-
 
 
 }

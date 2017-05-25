@@ -92,7 +92,6 @@
             {!! $tablePresenter->jsColums('总设备','all_device_count') !!}
             {!! $tablePresenter->jsColums('调节次数','adjust_count') !!}
             {!! $tablePresenter->jsColums('工作时长','all_time') !!}
-            {!! $tablePresenter->jsColums('未用系统能耗','use_energy') !!}
             {!! $tablePresenter->jsColums('使用系统能耗','no_use_energy') !!}
             {!! $tablePresenter->jsColums('节能数量','use_energy_count') !!}
             {!! $tablePresenter->jsColums('节能比例','use_energy_scale') !!}
@@ -104,28 +103,28 @@
 
 
     {{-- 图表 --}}
-    <div id="main" class="flex-row">
-        <div id="view" class="flex-column">
-            <div id="course">
-                <h1><b class="inline-block">系统能耗对比</b></h1>
-                <div class="chart">
-                    <div class="point">
-                        <p><b></b><span>使用系统能耗</span></p>
-                        <p><b></b><span>未用系统能耗</span></p>
-                    </div>
-                    <div id="aaa" style="width:100%;height:600px;"></div>
-                </div>
-                <div id="info">
-                    <h2>节能估算方式：<b>P1=P(C1-C2)/(C1-C3)</b></h2>
-                    <p><b>P1</b><span>空调实际功率，空调的功耗主要来自压缩机，当室内温度到设定温度时，压缩机会暂时停机</span></p>
-                    <p><b>P</b><span>空调满载功率，基本就是压缩机功率（大空调的压缩机占整机的98%以上），在你这里是31KW</span></p>
-                    <p><b>C1</b><span>环境温度，是指完全不用空调时的室内温度，如果将空调设定在此温度，压缩功率为0</span></p>
-                    <p><b>C2</b><span>设定温度，空调的实际设定温度，当小于C3时取C2=C3</span></p>
-                    <p><b>C3</b><span>满载温度，空调不停机时房间能达到的最低温度，跟空调功率，散热器效率，房间热阻有关</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{--<div id="main" class="flex-row">--}}
+        {{--<div id="view" class="flex-column">--}}
+            {{--<div id="course">--}}
+                {{--<h1><b class="inline-block">系统能耗对比</b></h1>--}}
+                {{--<div class="chart">--}}
+                    {{--<div class="point">--}}
+                        {{--<p><b></b><span>使用系统能耗</span></p>--}}
+                        {{--<p><b></b><span>未用系统能耗</span></p>--}}
+                    {{--</div>--}}
+                    {{--<div id="aaa" style="width:100%;height:600px;"></div>--}}
+                {{--</div>--}}
+                {{--<div id="info">--}}
+                    {{--<h2>节能估算方式：<b>P1=P(C1-C2)/(C1-C3)</b></h2>--}}
+                    {{--<p><b>P1</b><span>空调实际功率，空调的功耗主要来自压缩机，当室内温度到设定温度时，压缩机会暂时停机</span></p>--}}
+                    {{--<p><b>P</b><span>空调满载功率，基本就是压缩机功率（大空调的压缩机占整机的98%以上），在你这里是31KW</span></p>--}}
+                    {{--<p><b>C1</b><span>环境温度，是指完全不用空调时的室内温度，如果将空调设定在此温度，压缩功率为0</span></p>--}}
+                    {{--<p><b>C2</b><span>设定温度，空调的实际设定温度，当小于C3时取C2=C3</span></p>--}}
+                    {{--<p><b>C3</b><span>满载温度，空调不停机时房间能达到的最低温度，跟空调功率，散热器效率，房间热阻有关</span></p>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 </div>
 
 
@@ -137,6 +136,12 @@
         var id = $(this).val();
         getSub("{{url('admin/user/get-sub-user')}}", id, 'user3', true, false);
     });
+
+    $("#ok").click(function () {
+        alert(1);
+    })
+
+    var data = [];
 
     createChart();
     function createChart(series) {
@@ -168,17 +173,17 @@
                 type: 'value'
             },
             series: [
-                {
-                    name: '未用系统能耗',
-                    type: 'line',
-                    smooth: true,
-                    data: [{!! implode(",",$chartData[1]) !!}]
-                },
+                {{--{--}}
+                    {{--name: '未用系统能耗',--}}
+                    {{--type: 'line',--}}
+                    {{--smooth: true,--}}
+                    {{--data: [{!! implode(",",$chartData[1]) !!}]--}}
+                {{--},--}}
                 {
                     name: '使用系统能耗',
                     type: 'line',
                     smooth: true,
-                    data: [{!! implode(",",$chartData[0]) !!}]
+                    data: chartData
                 }
             ]
         };

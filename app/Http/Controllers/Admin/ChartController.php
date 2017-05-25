@@ -40,8 +40,10 @@ class ChartController extends BaseController
             $param = $this->cleanAjaxPageParam($request->all());
             $results = $this->chart->getAjaxChartList(array_get($param, 'data'));
 
-            return $this->responseAjaxTable($results['total'], $results['rows']);
+            $chartData[0] = $this->chart->getChartForHour($param, 2, 'use_energy');
+            $results['chartData'] = $chartData;
 
+            return json_encode($results);
         } else {
             $provinceData = $this->chart->getDistrict(0);
             foreach ($provinceData as $k => $v) {
@@ -62,13 +64,9 @@ class ChartController extends BaseController
             ksort($user2_select);
             ksort($user3_select);
 
-            $chartData[0] = $this->chart->getChartForHour(2, 'use_energy');
-            $chartData[1] = $this->chart->getChartForHour(2, 'no_use_energy');
-
-            $reponse = $this->returnSearchFormat(url('admin/device/chart'));
-
+            $reponse = $this->returnSearchFormat(url('admin/chart/energy'));
             // 根据不用角色展示不同模板
-            return view('admin/chart/energy', compact('provinceSelect', 'reponse', 'user2_select', 'user3_select', 'chartData'));
+            return view('admin/chart/energy', compact('provinceSelect', 'reponse', 'user2_select', 'user3_select'));
 
         }
     }
@@ -77,7 +75,8 @@ class ChartController extends BaseController
     {
         if ($request->ajax()) {
 
-            $results = $this->chart->getAjaxChartList();
+            $param = $this->cleanAjaxPageParam($request->all());
+            $results = $this->chart->getAjaxReport($param);
 
             return $this->responseAjaxTable($results['total'], $results['rows']);
 

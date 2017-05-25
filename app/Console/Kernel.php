@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\DeviceCron;
+use App\Console\Commands\DeviceLogCron;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
         DeviceCron::class,
+        DeviceLogCron::class,
     ];
 
     /**
@@ -29,6 +31,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('device:sendgiz')->hourly();
+        $schedule->command('device:log')->days(1);
     }
 
     /**

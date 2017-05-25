@@ -35,7 +35,28 @@ class SettingController extends BaseController
         }
     }
 
+    public function base(Request $request)
+    {
 
+        if ($request->ajax()) {
+
+            $data = $request->input('data');
+            $result = set_setting('base', 'base', json_encode($data));
+            $result ? $this->responseData(0) : $this->responseData(9000);
+
+        } else {
+
+            $base = get_setting('base', 'base');
+            $base = json_decode($base, true);
+            $this->returnFieldFormat('text', '每小时浩电量', 'data[comsume]', $base['comsume']);
+            $this->returnFieldFormat('text', '电费', 'data[fee]', $base['fee']);
+
+            $reponse = $this->returnFormFormat('使用说明设置', $this->getFormField());
+
+            return view('admin/setting/use_desc', compact('reponse'));
+        }
+
+    }
 
 
 }

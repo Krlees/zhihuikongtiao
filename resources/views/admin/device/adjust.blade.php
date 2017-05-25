@@ -359,13 +359,13 @@
             <div class="ibox-content adjust-content">
                 <div class="row">
                     {{--<div class="col-md-2">--}}
-                        {{--<label class="control-label">情景模式</label>--}}
-                        {{--<div class="btn-group">--}}
-                            {{--<button class="btn btn-white timer-reduce" type="button">-</button>--}}
-                            {{--<input type="text" class="col-sm-1 form-control" id="timer-value" data-index="5"--}}
-                                   {{--style="border-radius: 0" value="0">--}}
-                            {{--<button class="btn btn-white timer-add" type="button">+</button>--}}
-                        {{--</div>--}}
+                    {{--<label class="control-label">情景模式</label>--}}
+                    {{--<div class="btn-group">--}}
+                    {{--<button class="btn btn-white timer-reduce" type="button">-</button>--}}
+                    {{--<input type="text" class="col-sm-1 form-control" id="timer-value" data-index="5"--}}
+                    {{--style="border-radius: 0" value="0">--}}
+                    {{--<button class="btn btn-white timer-add" type="button">+</button>--}}
+                    {{--</div>--}}
                     {{--</div>--}}
                     <div class="col-md-2">
                         <label class="control-label">情景模式</label>
@@ -486,6 +486,8 @@
 
     $(function () {
 
+
+
         // 调用当前天气
         $.getJSON("{{url('admin/device/get-weather')}}", {}, function (res) {
             var temps = res.weatherinfo.temp2.substr(0, 2);
@@ -500,10 +502,10 @@
 
         gizwitsws = newObj();
         gizwitsws.init();
-        
+
         // 情景模式
-        $(".scene_mode").on('click',function () {
-            $.getJSON("{{url('admin/device/get-scene')}}",{},function (res) {
+        $(".scene_mode").on('click', function () {
+            $.getJSON("{{url('admin/device/get-scene')}}", {}, function (res) {
 
             });
         })
@@ -726,6 +728,9 @@
 
             {{--});--}}
 
+            // 检测匹配节能策略
+            checkStrategy();
+
         }
         else {
             //if (is_sync == false) {
@@ -747,6 +752,34 @@
 
     function onError(value) {
         layer.msg(value.toString());
+    }
+
+    /**
+     *  检测节能策略是否介入
+     */
+    function checkStrategy() {
+        var outTemp = $("#room_temp").text() - 0; // 室外温度
+        var inTemp = $("#now_temp").text() - 0;  // 室内温度
+
+        $.ajax({
+            url: '{{url('admin/strategy/set-strategy-log')}}' + '/' + did,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                _token: "{{csrf_token()}}",
+                out_temp: outTemp,
+                in_temp: inTemp,
+            },
+        })
+            .done(function () {
+                console.log("success");
+            })
+            .fail(function () {
+                console.log("error");
+            })
+            .always(function () {
+                console.log("complete");
+            });
     }
 
 

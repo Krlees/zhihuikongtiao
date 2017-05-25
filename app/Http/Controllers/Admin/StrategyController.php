@@ -132,11 +132,35 @@ class StrategyController extends BaseController
     {
         $list = $this->strategy->useChart();
         $chartData = array_column($list, 'scale');
-        foreach ($list as $k=>$v){
+        $countData = [];
+        foreach ($list as $k => $v) {
             $countData[] = $k;
         }
 
-        return view('admin/strategy/use_chart', compact('chartData','countData'));
+        return view('admin/strategy/use_chart', compact('chartData', 'countData'));
+    }
+
+    /**
+     * 记录策略介入
+     * @Author Krlee
+     *
+     */
+    public function setStrategyLog($deviceId, Request $request)
+    {
+        $bestTemp = 26; //人体最适温度
+        $outTemp = $request->input('out_temp'); //室外温度
+        $inTemp  = $request->input('in_temp'); // 室内温度
+
+        // 匹配策略
+        $result = $this->strategy->get();
+        if( empty($result)){
+            return [];
+        }
+
+        // 记录
+        $this->strategy->setStrategyLog($deviceId,$bestTemp, $outTemp, $inTemp);
+
+        return $result;
     }
 
 
