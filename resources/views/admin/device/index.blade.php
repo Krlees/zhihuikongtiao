@@ -49,8 +49,12 @@
         $(document).on('click', '#adjust-action', function () {
             var ids = getIdSelections();
             ids = ids.join(",");
+            if( !ids ){
+                layer.msg("请至少选择一项");
+                return false;
+            }
 
-            window.location.href = "{{url('admin/device/adjustAll')}}" + "/" + ids;
+            window.location.href = "{{url('admin/device/adjust-all')}}" + "/" + ids;
         })
 
 

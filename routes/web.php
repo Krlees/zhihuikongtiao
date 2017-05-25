@@ -94,6 +94,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('edit/{id}', 'DeviceController@edit');
         Route::any('del', 'DeviceController@del');
         Route::any('adjust/{id}', 'DeviceController@adjust'); // 设备调控
+        Route::any('adjust-all/{ids}', 'DeviceController@adjustAll'); // 设备调控
         Route::any('get-Gizwit-Config', 'DeviceController@getGizwitConfig');
         Route::any('chart', 'DeviceController@chart'); // 能耗统计
         Route::any('live', 'DeviceController@live');   // 冷热实况

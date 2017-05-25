@@ -66,17 +66,28 @@ class DeviceController extends BaseController
         return view('admin/device/adjust', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
     }
 
-    public function adjustAll($ids, Request $request)
+    /**
+     * 批量设置
+     * @Author Krlee
+     *
+     * @param $ids
+     * @param Request $request
+     * @param QianhaiService $qianhaiService
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function adjustAll($id, Request $request, QianhaiService $qianhaiService)
     {
-        if (strpos($ids, ",") !== false) {
-            $ids = explode(",", $ids);
+        if (strpos($id, ",") !== false) {
+            $ids = explode(",", $id);
         } else {
-            $ids[] = $ids;
+            $ids[] = $id;
         }
 
+        $info = $this->device->get($ids[0]);
+        $gizwit_id = $info->user_id;
+        $sync_cmd = implode(",", $qianhaiService->sync_cmd);
 
-
-
+        return view('admin/device/adjust_all', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
     }
 
     /**
