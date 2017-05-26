@@ -481,6 +481,7 @@
 
         // 调用当前天气
         $.getJSON("{{url('admin/device/get-weather')}}", {}, function (res) {
+            var temps = res.temp;
             $(".room_temp").text(res.temp);
             $(".room_humidity").text(res.humidity);
             $(".text-weather").text(res.weather);
