@@ -235,10 +235,9 @@ class DeviceController extends BaseController
         $airCmd[1] = (int)$data['wind_rate'];
         $airCmd[2] = (int)$data['wind_direction'];
         $airCmd[3] = (int)$data['auto_wind_direction'];
-        $airCmd[4] = $data['power'] ? 1 : 0;
+        $airCmd[4] = ($data['power'] == "true") ? 1 : 0;
         $airCmd[5] = 1;
         $airCmd[6] = (int)$data['mode'];
-
 
         $cmd = $qianhaiService->getAirCmd($airCmd);
 
