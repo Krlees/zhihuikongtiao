@@ -486,7 +486,13 @@
             $(".room_humidity").text(res.humidity);
             $(".text-weather").text(res.weather);
 
-            bestTemp = Math.ceil((temps - 0) * 0.7);
+            bestTemp = Math.ceil((temps - 0) / 0.7);
+            if( bestTemp < 16 ){
+                bestTemp = 16;
+            } else if( bestTemp < 30 ){
+                bestTemp = 30;
+            }
+
             $("#best-temp").html(bestTemp + '<i>℃</i>');
 
         });
