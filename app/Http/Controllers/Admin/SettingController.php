@@ -25,9 +25,12 @@ class SettingController extends BaseController
             $result ? $this->responseData(0) : $this->responseData(9000);
 
         } else {
-
+            $option = [];
+            if (\Auth::user()->level != 0) {
+                $option = ['readonly' => 'true'];
+            }
             $use_desc = get_setting('use_desc', 'level' . $level);
-            $this->returnFieldFormat('textarea', '使用说明', 'data[use_desc]', $use_desc);
+            $this->returnFieldFormat('textarea', '使用说明', 'data[use_desc]', $use_desc, $option);
 
             $reponse = $this->returnFormFormat('使用说明设置', $this->getFormField());
 
@@ -48,7 +51,7 @@ class SettingController extends BaseController
 
             $base = get_setting('base', 'base');
             $base = json_decode($base, true);
-            $this->returnFieldFormat('text', '每小时浩电量', 'data[comsume]', $base['comsume']);
+            $this->returnFieldFormat('text', '每小时耗电量', 'data[comsume]', $base['comsume']);
             $this->returnFieldFormat('text', '电费', 'data[fee]', $base['fee']);
 
             $reponse = $this->returnFormFormat('使用说明设置', $this->getFormField());

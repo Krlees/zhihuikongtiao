@@ -43,7 +43,7 @@
                             <div class="input-daterange input-group" id="datepicker">
                                 <input type="text" class="input-sm form-control" name="start" placeholder="开始时间" />
                                 <span class="input-group-addon">到</span>
-                                <input type="text" class="input-sm form-control" name="end" value="结束时间" />
+                                <input type="text" class="input-sm form-control" name="end" placeholder="结束时间" />
                             </div>
                         </div>
                         <div class="col-md-1">

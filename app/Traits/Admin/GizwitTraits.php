@@ -73,6 +73,21 @@ trait GizwitTraits
         return json_decode($res, true);
     }
 
+    public function unbingDevice($appId, $userToken, $dids)
+    {
+        $nowTime = time();
+        $header = [
+            'x-gizwits-application-id: ' . $appId,
+            'x-gizwits-user-token: ' . $userToken
+        ];
+
+        $body = ['devices' => [$dids]];
+
+        $res = curl_do('http://api.gizwits.com/app/bindings', $header, json_encode($body), 'DELETE');
+
+        return json_decode($res, true);
+    }
+
     /**
      * 获取服务商绑定的设备数据
      * @Author Krlee
@@ -103,7 +118,14 @@ trait GizwitTraits
             'x-gizwits-user-token: ' . $userToken
         ];
 
-        $body = ['RAW_SMARTHOME' => $cmd];
+        $str = implode("", decto_bin($cmd, 2));
+
+        $count = strlen($str);
+        for ($count; $count < 512; $count++) {
+            $str .= 0;
+        }
+
+        $body = ['attrs' => ['RAW_SMARTHOME' => $str]];
 
         $res = curl_do('http://api.gizwits.com/app/control/' . $did, $header, json_encode($body));
 

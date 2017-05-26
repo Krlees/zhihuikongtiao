@@ -195,7 +195,6 @@ GizwitsWS.prototype._getUserToken = function() {
       data: {"phone_id": me._openId}
     })
     .done(function(result) {
-      console.log(result)
       me._userId = result.uid;
       me._userToken = result.token;
       var limit = 20;

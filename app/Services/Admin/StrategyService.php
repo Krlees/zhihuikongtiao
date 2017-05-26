@@ -82,18 +82,20 @@ class StrategyService extends BaseService
         return $list;
     }
 
-    public function setStrategyLog($deviceId, $baetTemp, $outTemp, $inTemp)
+    public function setStrategyLog($deviceIds, $baetTemp, $outTemp, $inTemp)
     {
         $scale = ($baetTemp * 0.5) + ($outTemp * 0.2) + ($inTemp * 0.3);
 
         try {
-            $result = DB::table('strategy_log')->insert([
-                'device_id' => $deviceId,
-                'out_temp' => $outTemp,
-                'in_temp' => $inTemp,
-                'scale' => $scale,
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
+            foreach ($deviceIds as $deviceId) {
+                $result = DB::table('strategy_log')->insert([
+                    'device_id' => $deviceId,
+                    'out_temp' => $outTemp,
+                    'in_temp' => $inTemp,
+                    'scale' => $scale,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+            }
             return $result ? true : false;
 
         } catch (\Exception $e) {

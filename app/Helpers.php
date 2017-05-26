@@ -231,6 +231,31 @@ if (!function_exists('get_future_datetime')) {
 }
 
 
+function decto_bin($datalist, $bin)
+{
+    static $arr = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F');
+    if (!is_array($datalist)) $datalist = array($datalist);
+    if ($bin == 10) return $datalist; //相同进制忽略
+    $bytelen = ceil(16 / $bin); //获得如果是$bin进制，一个字节的长度
+    $aOutChar = array();
+    foreach ($datalist as $num) {
+        $t = "";
+        $num = intval($num);
+        if ($num === 0) continue;
+        while ($num > 0) {
+            $t = $arr[$num % $bin] . $t;
+            $num = floor($num / $bin);
+        }
+        $tlen = strlen($t);
+        if ($tlen % $bytelen != 0) {
+            $pad_len = $bytelen - $tlen % $bytelen;
+            $t = str_pad("", $pad_len, "0", STR_PAD_LEFT) . $t; //不足一个字节长度，自动前面补充0
+        }
+        $aOutChar[] = $t;
+    }
+    return $aOutChar;
+}
+
 
 
 

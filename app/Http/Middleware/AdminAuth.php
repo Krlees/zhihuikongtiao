@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Route;
+use DB;
 
 class AdminAuth
 {
@@ -24,30 +25,38 @@ class AdminAuth
         }
 
         $str = "";
-        $arr = explode("/", $request->path());
-        foreach ($arr as $v){
-            $str .= $v.".";
+        $urlPath = $request->path();
+        $menu = DB::table('menu')->where('url', $urlPath)->first(['permission_name']);
+        if (!empty($menu)) {
+            $str = $menu->permission_name;
         }
-        $str = trim($str,".");
-        if ($str == 'admin.index') {
+        else {
+            $arr = explode("/",$urlPath);
+            $str = $arr[0].".".$arr[1].".".$arr[2];
+        }
+
+        if ($urlPath == 'admin/index') {
             $str = 'admin.index.index';
-        } elseif ($str == 'admin.dashboard') {
+        } elseif ($urlPath == 'admin/dashboard') {
             $str = 'admin.index.dashboard';
         }
 
-//        if (!Auth::user()->may($str) && !$request->ajax()) {
-////            if ($request->ajax() && ($request->getMethod() != 'GET')) {
-////                return response()->json([
-////                    'code' => 403,
-////                    'msg' => '您没有权限执行此操作'
-////                ]);
-////            } else {
-////                return response('权限不足.', 403);
-////            }
-//
-//            return response('权限不足.', 403);
-//
-//        }
+//        dd($str);
+
+
+        if (!Auth::user()->may($str) && !$request->ajax()) {
+//            if ($request->ajax() && ($request->getMethod() != 'GET')) {
+//                return response()->json([
+//                    'code' => 403,
+//                    'msg' => '您没有权限执行此操作'
+//                ]);
+//            } else {
+//                return response('权限不足.', 403);
+//            }
+
+            return response('权限不足.', 403);
+
+        }
 
         return $next($request);
     }

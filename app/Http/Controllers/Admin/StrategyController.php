@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Presenters\Admin\StrategyPresenter;
+use App\Services\Admin\QianhaiService;
 use App\Services\Admin\StrategyService;
 use Illuminate\Http\Request;
 
@@ -145,22 +146,34 @@ class StrategyController extends BaseController
      * @Author Krlee
      *
      */
-    public function setStrategyLog($deviceId, Request $request)
+    public function setStrategyLog(Request $request, QianhaiService $qianhaiService)
     {
         $bestTemp = 26; //人体最适温度
         $outTemp = $request->input('out_temp'); //室外温度
-        $inTemp  = $request->input('in_temp'); // 室内温度
+        $inTemp = $request->input('in_temp'); // 室内温度
+
+        $deviceId = $request->input('deviceId');
+        if (strpos($deviceId, ",") !== false) {
+            $deviceIds = explode(",", $deviceId);
+        } else {
+            $deviceIds[] = $deviceId;
+        }
 
         // 匹配策略
         $result = $this->strategy->get();
-        if( empty($result)){
-            return [];
+        if ($result) {
+            $cmd = $qianhaiService->getAirCmd();
+            $cmd[14] = $result['temp'];
+            if ($result['is_humidity']) {
+                $cmd[21] = 1;
+
+            }
         }
 
         // 记录
-        $this->strategy->setStrategyLog($deviceId,$bestTemp, $outTemp, $inTemp);
+        $this->strategy->setStrategyLog($deviceIds, $bestTemp, $outTemp, $inTemp);
 
-        return $result;
+        return $result ? $this->responseData(0, '', ['RAW_SMARTHOME' => $cmd]) : $this->responseData(80001);
     }
 
 

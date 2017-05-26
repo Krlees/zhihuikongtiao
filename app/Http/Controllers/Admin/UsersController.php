@@ -46,7 +46,7 @@ class UsersController extends BaseController
         if ($request->ajax()) {
 
             $b = $this->user->createData($level, $request->all());
-            return $b ? $this->responseData(0, '', null, url('admin/user/index')) : $this->responseData(400);
+            return $b ? $this->responseData(0, '', null, url('admin/user/index/' . $level)) : $this->responseData(400);
 
         } else {
 

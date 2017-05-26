@@ -146,6 +146,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     // 消息
     Route::group(['prefix' => 'message'], function () {
         Route::any('index/{isRead}',  'MessageController@index');
+        Route::any('add',  'MessageController@add');
         Route::any('del',  'MessageController@del');
     });
 

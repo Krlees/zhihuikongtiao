@@ -40,8 +40,8 @@ class ChartController extends BaseController
             $param = $this->cleanAjaxPageParam($request->all());
             $results = $this->chart->getAjaxChartList(array_get($param, 'data'));
 
-            $chartData[0] = $this->chart->getChartForHour($param, 2, 'use_energy');
-            $results['chartData'] = $chartData;
+//            $chartData[0] = $this->chart->getChartForHour($param, 2, 'use_energy');
+//            $results['chartData'] = $chartData;
 
             return json_encode($results);
         } else {

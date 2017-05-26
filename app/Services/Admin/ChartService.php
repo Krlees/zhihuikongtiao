@@ -20,10 +20,10 @@ class ChartService extends BaseService
     {
         $userId = $this->getCurrentUser($param);
         $where = "";
-        if (isset($param['start'])) {
+        if (array_get($param, 'start')) {
             $where = "and date > '{$param['start']}' ";
         }
-        if (isset($param['end'])) {
+        if (array_get($param,'end')) {
             $where = "and date < '{$param['end']}' ";
         }
 
@@ -98,16 +98,32 @@ class ChartService extends BaseService
 
             // 一年累计统计
             if ($v->date >= $old_Date3 && $v->date <= $nowDate) {
-                $result[1] = $this->_helpChart($result, $v, 2);
+                $result[1] = $this->_helpChart($result, $v, 1);
             }
 
             // 全部累计统计
-            $result[0] = $this->_helpChart($result, $v, 2);
+            $result[0] = $this->_helpChart($result, $v, 0);
         }
 
-        // 返回统计所需的格式
+        // 调节次数
         foreach ($result as $k => $v) {
-            $whereDate = date('Y-m-d', strtotime("-{$k} month"));
+            switch ($k) {
+                case 1:
+                    $whereDate = $old_year;
+                    break;
+                case 2:
+                    $whereDate = $old_Date3;
+                    break;
+                case 3:
+                    $whereDate = $old_Date1;
+                    break;
+                case 4:
+                    $whereDate = $nowDate;
+                    break;
+                default:
+                    $whereDate = 0;
+            }
+
             $result[$k]['all_device_count'] = DB::table('device_air_use_log')->whereIn('device_id', $ids)
                 ->where('date', '>=', $whereDate)
                 ->where('date', '<=', $nowDate)
@@ -120,7 +136,6 @@ class ChartService extends BaseService
                 ->count();
             $result[$k]['use_energy_scale'] = $v['use_energy'] ? (floor($v['use_energy'] / $v['all_time'] * 10000) / 10000 * 100) . '%' : 0;
         }
-
 
 
         return ['rows' => $result, 'total' => 1];

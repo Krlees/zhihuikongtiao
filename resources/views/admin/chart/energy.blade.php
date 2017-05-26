@@ -92,8 +92,7 @@
             {!! $tablePresenter->jsColums('总设备','all_device_count') !!}
             {!! $tablePresenter->jsColums('调节次数','adjust_count') !!}
             {!! $tablePresenter->jsColums('工作时长','all_time') !!}
-            {!! $tablePresenter->jsColums('使用系统能耗','no_use_energy') !!}
-            {!! $tablePresenter->jsColums('节能数量','use_energy_count') !!}
+            {!! $tablePresenter->jsColums('使用系统能耗','use_energy') !!}
             {!! $tablePresenter->jsColums('节能比例','use_energy_scale') !!}
         ];
     </script>
@@ -137,9 +136,8 @@
         getSub("{{url('admin/user/get-sub-user')}}", id, 'user3', true, false);
     });
 
-    $("#ok").click(function () {
-        alert(1);
-    })
+//    $("#ok").click(function () {
+//    })
 
     var data = [];
 

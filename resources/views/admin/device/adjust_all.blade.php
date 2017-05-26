@@ -221,6 +221,17 @@
             font-size: 3rem;
             vertical-align: text-top;
         }
+
+        .device-info th {
+            width: 10%;
+            height: 32px;
+            text-align: center
+        }
+
+        .device-info tr {
+            text-align: center;
+            height: 32px;
+        }
     </style>
 </head>
 
@@ -239,112 +250,28 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row device-info">
-                        <p>设备标识名: {{$info->name}}</p>
-                        <p>设备号: {{$info->did}}</p>
-                        <p>MAC地址: {{$info->mac}}</p>
-                        <p>
+                        <table>
+                            <thead>
+                            <th>设备标识名</th>
+                            <th>设备号</th>
+                            <th>MAC地址</th>
+                            {{--<th>状态</th>--}}
+                            </thead>
+                            <tbody>
+                            @foreach($info as $v)
+                                <tr>
+                                    <td>{{$v->name}}</td>
+                                    <td>{{$v->did}}</td>
+                                    <td>{{$v->mac}}</td>
+                                    {{--<td id="device-status">未知</td>--}}
+                                </tr>
+                            @endforeach
 
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row live-middle">
-        <div class="col-md-3">
-            <div class="top">
-                <div class="ibox-title">
-                    <h5 style="font-size: 16px;">
-                        <img style="width: 18px;" src="{{asset('hplus/css/images/icon-yun.png')}}" alt="">
-                        当前天气实况
-                    </h5>
-                </div>
-                <div class="ibox-content">
-                    <h1><i class="room_temp"></i><b>℃</b></h1>
-                    <div class="text">
-                        <span class="text-time">2017年4月14日</span>
-                        <span class="text-weather">晴</span>
-                        <span class="text-humidity">湿度：<i class="room_humidity">30</i>%</span>
-                    </div>
-                </div>
-            </div>
-            <div class="bottom">
-                <div class="ibox-title">
-                    <h5 style="font-size: 16px;">
-                        <img style="width: 18px;" src="{{asset('hplus/css/images/icon-tongji.png')}}" alt="">
-                        当前室内数据统计
-                    </h5>
-                </div>
-                <div class="ibox-content">
-                    <div>
-                        <h1>
-                            <i class="now_temp">26</i>℃
-                            <p style="font-size: 12px">温度</p>
-                        </h1>
-                        <h1>
-                            <i class="now_humidity">26</i>%
-                            <p style="font-size: 12px">湿度</p>
-                        </h1>
-                    </div>
-                    <div class="text">
-                        <span>房间: 16m</span>
-                        <span>空闭性: 60%</span>
-                    </div>
-                    <div class="text">
-                        <span>空调能耗: 1300</span>
-                        <span>实际能耗: 1300</span>
-                        <span>老化：30%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="ibox-title">
-                <h5 style="font-size: 16px;">
-                    <img style="width: 18px;" src="{{asset('hplus/css/images/icon-wendu.png')}}" alt="">
-                    最佳温度
-                </h5>
-            </div>
-            <div class="ibox-content">
-                <div class="content">
-                    {{--<img style="float: left;width: 300px;height: 300px;" "--}}
-                    {{--alt="">--}}
-                    <div class="best-weather">
-                        <p id="best-temp">25<i>℃</i></p>
-                        <p style="position: relative;top: 5rem;left: -7rem;font-size: 2rem;">70%</p>
-                    </div>
+                            </tbody>
+                        </table>
 
-                    <ul class="content-desc">
-                        <li><span>计算取值：</span></li>
-                        <li>
-                            <span>气温</span>
-                            <b>40%</b>
-                        </li>
-                        <li>
-                            <span>湿度</span>
-                            <b>20%</b>
-                        </li>
-                        <li>
-                            <span>晴</span>
-                            <b>10%</b>
-                        </li>
-                        <li>
-                            <span>阴</span>
-                            <b>10%</b>
-                        </li>
-                        <li>
-                            <span>雨</span>
-                            <b>10%</b>
-                        </li>
-                        <li>
-                            <span>雪</span>
-                            <b>10%</b>
-                        </li>
-                    </ul>
+                    </div>
                 </div>
-                {{--<div class="bottom">--}}
-                {{--备注:60%取值24℃，70%取值25℃，80%取值26℃--}}
-                {{--</div>--}}
             </div>
         </div>
     </div>
@@ -358,26 +285,6 @@
             </div>
             <div class="ibox-content adjust-content">
                 <div class="row">
-                    {{--<div class="col-md-2">--}}
-                    {{--<label class="control-label">情景模式</label>--}}
-                    {{--<div class="btn-group">--}}
-                    {{--<button class="btn btn-white timer-reduce" type="button">-</button>--}}
-                    {{--<input type="text" class="col-sm-1 form-control" id="timer-value" data-index="5"--}}
-                    {{--style="border-radius: 0" value="0">--}}
-                    {{--<button class="btn btn-white timer-add" type="button">+</button>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-                    <div class="col-md-2">
-                        <label class="control-label">情景模式</label>
-                        <div class="btn-group">
-                            <button data-key="1" class="scene_mode btn-adjust btn btn-white" type="button">经济
-                            </button>
-                            <button data-key="2" class="scene_mode btn-adjust btn btn-white" type="button">舒适
-                            </button>
-                            <button data-key="3" class="scene_mode btn-adjust btn btn-success" type="button">环保
-                            </button>
-                        </div>
-                    </div>
                     <div class="col-md-2">
                         <label class="control-label">风速调节</label>
                         <div class="btn-group">
@@ -391,17 +298,17 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <label class="control-label">模式</label>
-                        <div class="btn-group">
-                            <button data-key="2" class="mode btn-adjust btn btn-white btn-success" type="button">冷
-                            </button>
-                            <button data-key="3" class="mode btn-adjust btn btn-white" type="button">去湿
-                            </button>
-                            <button data-key="5" class="mode btn-adjust btn btn-white" type="button">热
-                            </button>
-                        </div>
-                    </div>
+                    {{--<div class="col-md-2">--}}
+                    {{--<label class="control-label">模式</label>--}}
+                    {{--<div class="btn-group">--}}
+                    {{--<button data-key="2" class="mode btn-adjust btn btn-white btn-success" type="button">冷--}}
+                    {{--</button>--}}
+                    {{--<button data-key="3" class="mode btn-adjust btn btn-white" type="button">去湿--}}
+                    {{--</button>--}}
+                    {{--<button data-key="5" class="mode btn-adjust btn btn-white" type="button">热--}}
+                    {{--</button>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
                     <div class="col-md-2">
                         <label class="control-label">自动风向</label>
                         <div class="btn-group">
@@ -472,8 +379,8 @@
 <script>
     var sock = false;
     var gizwitsws;
-    var deviceId = "{{$info->id}}";
-    var did = "{{$info->did}}";
+    var deviceId = "";
+    var did = "";
     var apiHost = "{{$gizwitsCfg['apihost']}}";
     var commType = "attrs_v4";
     var wechatOpenId = "{{$gizwit_id}}";
@@ -482,7 +389,10 @@
     var power;  // 开关
     var roomState = true;
     var bestTemp = 0;
-
+    var gizObj = [];
+    var dids = [];
+    var deviceIds = [];
+    var didCount = {{count($info)}};
 
     $(function () {
 
@@ -500,15 +410,20 @@
 
         });
 
+        @foreach($info as $k=>$v)
+        dids[{{$k}}] = "{{$v->did}}";
+        deviceIds[{{$k}}] = "{{$v->id}}";
         gizwitsws = newObj();
         gizwitsws.init();
+        gizObj[{{$k}}] = gizwitsws;
+        @endforeach
 
         // 情景模式
-        $(".scene_mode").on('click', function () {
-            $.getJSON("{{url('admin/device/get-scene')}}", {}, function (res) {
+        {{--$(".scene_mode").on('click', function () {--}}
+            {{--$.getJSON("{{url('admin/device/get-scene')}}", {}, function (res) {--}}
 
-            });
-        })
+            {{--});--}}
+        {{--})--}}
 
         // JS控件
         $("#power").bootstrapSwitch();
@@ -581,14 +496,6 @@
     });
 
     function ajaxCmd() {
-//        if (sock) {
-//            return false;
-//        }
-
-//        var cmd = '{"RAW_SMARTHOME":[255,255,11,16,1,0,0,0,0,0,0,0,1,0,25,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}';
-//        writeCommand(JSON.parse(cmd));
-//        layer.msg(cmd);
-
 
         var temp = $(".temp").val(); // 温度
         var wind_direction = $(".wind_direction.btn-success").attr('data-key'); // 风向
@@ -601,9 +508,8 @@
             times.push($(v).attr('data-key'));
         });
 
-        console.log($(".wind_rate.btn-success"));
         sock = true;
-        $.post("{{url('admin/device/get-gizwit-cmd')}}" + "/" + deviceId, {
+        $.post("{{url('admin/device/get-gizwit-cmd')}}" + "/" + deviceIds[0], {
             '_token': "{{csrf_token()}}",
             'temp': temp,
             'wind_rate': wind_rate,
@@ -616,7 +522,10 @@
             sock = false;
 
             if (cmd) {
-                writeCommand(cmd);
+                $(dids).each(function (i,did) {
+                    writeCommand(cmd);
+                });
+
             } else {
                 layer.msg('命令传输失败');
             }
@@ -638,12 +547,17 @@
     }
 
     function writeCommand(cmd) {
-        try {
-            gizwitsws.write(did, cmd);
-            layer.msg("发送指令成功");
-        } catch (e) {
-            layer.msg("数据格式错误：" + e);
-        }
+        $(dids).each(function (i,did) {
+            try {
+                gizObj[i].write(did, cmd);
+                layer.msg("发送指令成功");
+            } catch (e) {
+                layer.msg("数据格式错误：" + e);
+            }
+        });
+
+
+
     }
 
     //=========================================================
@@ -654,17 +568,19 @@
      * 初始化完成后链接设备
      */
     function onInit(devices) {
+
         if (devices.length == 0) {
             layer.msg("没有绑定的设备");
         }
         else {
-            for (var i = 0; i < devices.length; i++) {
-                if (devices[i].did == did) {
-                    //connect();//连接设备
-                    this.connect(did);
-                    return;
-                }
-            }
+            $(devices).each(function (i,device) {
+                $(dids).each(function (k,did) {
+                    if( did == device.did){
+                        //连接设备
+                        gizObj[i].connect(did);
+                    }
+                })
+            });
         }
     }
 
@@ -673,6 +589,7 @@
      * @param did
      */
     function onConnected(did) {
+        alert(did)
         layer.msg("与设备:" + did + "连接成功!");
         this.read(did, null);
     }
@@ -762,13 +679,14 @@
         var inTemp = $("#now_temp").text() - 0;  // 室内温度
 
         $.ajax({
-            url: '{{url('admin/strategy/set-strategy-log')}}' + '/' + did,
+            url: '{{url('admin/strategy/set-strategy-log')}}',
             type: 'POST',
             dataType: 'json',
             data: {
                 _token: "{{csrf_token()}}",
                 out_temp: outTemp,
                 in_temp: inTemp,
+                deviceIds: deviceIds.join(","),
             },
         })
             .done(function () {

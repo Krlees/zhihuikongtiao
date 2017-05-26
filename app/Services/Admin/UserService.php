@@ -4,9 +4,12 @@ namespace App\Services\Admin;
 use App\Repositories\RoleRepositoryEloquent;
 use App\Repositories\UserRepositoryEloquent;
 use App\Services\Admin\BaseService;
+use App\Traits\Admin\UserTraits;
 
 class UserService extends BaseService
 {
+    use UserTraits;
+
     private $user;
     private $role;
 
@@ -22,17 +25,24 @@ class UserService extends BaseService
      * @param $param
      * @return array
      */
-    public function ajaxUserList($id, $param)
+    public function ajaxUserList($level, $param)
     {
-        $where[] = ['level', '=', $id, 'AND'];
+
+        $userId = $this->getCurrentUser();
+
+        $level = (int)$level;
+        if ($level != 0 && !\Auth::user()->hasRole('admin')) {
+            $where[] = ['pid', '=', $userId, 'AND'];
+        } else {
+            $where[] = ['level', '=', $level, 'AND'];
+        }
+
         if (isset($param['search'])) {
             $where[] = [
                 ['name', 'like', "%{$param['search']}%", 'OR'],
                 ['email', 'like', "%{$param['search']}%", 'OR'],
             ];
         }
-//        $where[] = ['is_super','<>',1];
-
 
         $results = $this->user->ajaxUserList($param['offset'], $param['limit'], $param['sort'], $param['order'], $where);
 

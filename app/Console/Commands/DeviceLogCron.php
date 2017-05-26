@@ -46,27 +46,35 @@ class DeviceLogCron extends Command
     {
         //每隔一天获取历史数据
         $cfg = \Config::get('gizwits.cfg');
-        $list = DB::table('device')->select();
+        $list = DB::table('device')->get();
         foreach ($list as $v) {
-            $gizUsers = $this->createGizwitUser($cfg['appid'], $v->user_id);
-            $result = $this->getHistoryData($cfg['appid'], $gizUsers['token'], 'fqvDqFzD3vakpz8P3VUXVY');
-            $res = json_decode($result, true);
 
-            foreach ($res['object'] as $k => $obj) {
+            $gizUsers = $this->createGizwitUser($cfg['appid'], $v->user_id);
+            $res = $this->getHistoryData($cfg['appid'], $gizUsers['token'], $v->did);
+            if (isset($res['error_code'])) {
+                continue;
+            }
+
+            $res = json_decode($res, true);
+            foreach ($res['objects'] as $k => $obj) {
                 if ($obj['type'] == 'dev_online') {
                     $arr[$k]['device_id'] = $v->id;
-                    $arr[$k]['all_time'] = $obj['keep_alive'];
+                    $arr[$k]['all_time'] = $obj['payload']['keep_alive'];
 
                     $c1 = mt_rand(16, 30);
                     $c2 = mt_rand(18, 28);
                     $c3 = 16;
-                    $arr[$k]['use_energy'] = ceil(31 * ($c1 / $c2) / ($c1 - $c3));
-                    $arr[$k]['created_at'] = substr($obj['timestamp'],0,10);
+                    $arr[$k]['use_energy'] = round(31 * ($c1 / $c2) / ($c1 - $c3), 2);
+                    $arr[$k]['date'] = date('Y-m-d H:i:s', substr($obj['timestamp'], 0, 10));
                 }
 
             }
 
-            DB::table('device_air_use_log')->insert($arr);
+            try {
+                DB::table('device_air_use_log')->insert($arr);
+            }catch (\Exception $e){
+
+            }
         }
 
         return true;

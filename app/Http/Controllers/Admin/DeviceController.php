@@ -83,9 +83,11 @@ class DeviceController extends BaseController
             $ids[] = $id;
         }
 
-        $info = $this->device->get($ids[0]);
-        $gizwit_id = $info->user_id;
+        $info = $this->device->getMany($ids);
+        $gizwit_id = $info[0]->user_id;
         $sync_cmd = implode(",", $qianhaiService->sync_cmd);
+
+        $gizwitsCfg = Config::get('gizwits.cfg');
 
         return view('admin/device/adjust_all', compact('info', 'gizwitsCfg', 'gizwit_id', 'sync_cmd'));
     }

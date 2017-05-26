@@ -34,6 +34,23 @@ class MessageController extends BaseController
         }
     }
 
+    public function add(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $data = $request->input('data');
+            $result = $this->message->addData($data);
+            $result ? $this->responseData(0) : $this->responseData(9000);
+
+        } else {
+
+            $this->returnFieldFormat('textarea','意见反馈','data[msg]');
+            $reponse = $this->returnFormFormat('提交意见',$this->getFormField());
+
+            return view('admin/message/add', compact('reponse'));
+        }
+    }
+
     public function del(Request $request)
     {
         $ids = $request->input('ids');

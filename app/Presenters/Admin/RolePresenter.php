@@ -19,10 +19,12 @@ class RolePresenter
             $html .= "<tr><td>" . $key . "</td><td>";
             if (is_array($val)) {
                 foreach ($val as $k => $v) {
+                    $id = array_get($v,'id');
+                    $name = array_get($v,'name');
                     $html .= <<<Eof
 						<div class="col-md-4">
 	                     	<div class="i-checks">
-	                        	<label> <input class="role-input" type="checkbox" name="permission[]" {$this->check($v['id'], $rolePermissions)} value="{$v['id']}"> <i></i> {$v['name']} </label>
+	                        	<label> <input class="role-input" type="checkbox" name="permission[]" {$this->check($id, $rolePermissions)} value="{$id}"> <i></i> {$name} </label>
 	                      	</div>
                       	</div>
 Eof;

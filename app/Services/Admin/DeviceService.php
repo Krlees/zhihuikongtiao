@@ -3,6 +3,7 @@ namespace App\Services\Admin;
 
 use App\Models\Device;
 use App\Traits\Admin\GizwitTraits;
+use App\Traits\Admin\UserTraits;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class DeviceService extends BaseService
 {
     use GizwitTraits;
+    use UserTraits;
 
     protected $device;
 
@@ -29,6 +31,13 @@ class DeviceService extends BaseService
     public function get($id)
     {
         return DB::table($this->device->getTable())->find($id);
+    }
+
+    public function getMany($ids)
+    {
+        $result = DB::table($this->device->getTable())->whereIn('id', $ids)->get()->toArray();
+
+        return $result;
     }
 
     /**
@@ -53,6 +62,9 @@ class DeviceService extends BaseService
      */
     public function ajaxList($param)
     {
+
+        $userId = $this->getCurrentUser();
+
         $where = [];
         if (isset($param['search'])) {
             $where = [
@@ -61,6 +73,7 @@ class DeviceService extends BaseService
                 ['mac', 'like', "%{$param['search']}%", 'OR'],
             ];
         }
+        $where[] = ['user_id', '=', $userId, 'AND'];
 
         $deviceDb = DB::table($this->device->getTable());
         $sort = $param['sort'] ?: $this->device->getKeyName();
@@ -74,10 +87,6 @@ class DeviceService extends BaseService
 
         return compact('rows', 'total');
     }
-
-
-
-
 
 
     /**
@@ -258,7 +267,28 @@ class DeviceService extends BaseService
      */
     public function delData($ids)
     {
-        return DB::table($this->device->getTable())->whereIn('id', $ids)->delete();
+        $result = false;
+
+        /* 解除绑定 */
+        $gizwitsCfg = Config::get('gizwits.cfg');
+
+        $rows = DB::table($this->device->getTable())->whereIn('id', $ids)->get();
+        foreach ($rows as $v) {
+            // 1. 获取token
+            $result = $this->createGizwitUser($gizwitsCfg['appid'], $v->user_id);
+            if (isset($result['error_code'])) {
+                return false;
+            }
+
+            $result = $this->unbingDevice($gizwitsCfg['appid'], $result['token'], ['did' => $v->did]);
+            if (!empty($result['success'])) {
+                $result = DB::table($this->device->getTable())->where('id', $v->id)->delete();
+            }
+
+        }
+
+        return $result ? true : false;
+
     }
 
 

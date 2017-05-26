@@ -359,25 +359,16 @@
             <div class="ibox-content adjust-content">
                 <div class="row">
                     {{--<div class="col-md-2">--}}
-                    {{--<label class="control-label">情景模式</label>--}}
-                    {{--<div class="btn-group">--}}
-                    {{--<button class="btn btn-white timer-reduce" type="button">-</button>--}}
-                    {{--<input type="text" class="col-sm-1 form-control" id="timer-value" data-index="5"--}}
-                    {{--style="border-radius: 0" value="0">--}}
-                    {{--<button class="btn btn-white timer-add" type="button">+</button>--}}
+                        {{--<label class="control-label">情景模式</label>--}}
+                        {{--<div class="btn-group">--}}
+                            {{--<button data-key="1" class="scene_mode btn-adjust btn btn-white" type="button">经济--}}
+                            {{--</button>--}}
+                            {{--<button data-key="2" class="scene_mode btn-adjust btn btn-white" type="button">舒适--}}
+                            {{--</button>--}}
+                            {{--<button data-key="3" class="scene_mode btn-adjust btn btn-success" type="button">环保--}}
+                            {{--</button>--}}
+                        {{--</div>--}}
                     {{--</div>--}}
-                    {{--</div>--}}
-                    <div class="col-md-2">
-                        <label class="control-label">情景模式</label>
-                        <div class="btn-group">
-                            <button data-key="1" class="scene_mode btn-adjust btn btn-white" type="button">经济
-                            </button>
-                            <button data-key="2" class="scene_mode btn-adjust btn btn-white" type="button">舒适
-                            </button>
-                            <button data-key="3" class="scene_mode btn-adjust btn btn-success" type="button">环保
-                            </button>
-                        </div>
-                    </div>
                     <div class="col-md-2">
                         <label class="control-label">风速调节</label>
                         <div class="btn-group">
@@ -762,17 +753,20 @@
         var inTemp = $("#now_temp").text() - 0;  // 室内温度
 
         $.ajax({
-            url: '{{url('admin/strategy/set-strategy-log')}}' + '/' + did,
+            url: '{{url('admin/strategy/set-strategy-log')}}',
             type: 'POST',
             dataType: 'json',
             data: {
                 _token: "{{csrf_token()}}",
                 out_temp: outTemp,
                 in_temp: inTemp,
+                deviceId:deviceId
             },
         })
-            .done(function () {
-                console.log("success");
+            .done(function (res) {
+                if(res.code == '0'){
+                    ajaxCmd(res.cmd);
+                }
             })
             .fail(function () {
                 console.log("error");

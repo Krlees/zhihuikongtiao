@@ -72,6 +72,7 @@ class DeviceCron extends Command
                 $cmd = json_decode($v['cmd']);
                 $cmd = $qianhaiService->getAirCmd($cmd);
 
+
                 $response = $this->sendControlGiz($gizwitsCfg['appid'], $result['token'], $v['did'], $cmd);
                 dd($response);
 
