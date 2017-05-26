@@ -129,7 +129,11 @@ class DeviceService extends BaseService
         $res = json_decode($result, true);
 
         $city = $res['content']['address_detail']['city'];
-        $city = str_replace("市", "", $city);
+        if ($city) {
+            $city = str_replace("市", "", $city);
+        } else {
+            $city = str_replace("省", "", $res['content']['address_detail']['province']);
+        }
 
         $result = DB::table('weather')->where('name', $city)->first(['code']);
 
