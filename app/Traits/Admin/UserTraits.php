@@ -41,5 +41,23 @@ trait UserTraits
         return $userId;
     }
 
+    /**
+     * 获取天气预报的citycode
+     * @Author Krlee
+     *
+     */
+    public function getWeatherCityCode()
+    {
+        $url = 'http://mobile.weather.com.cn/js/citylist.xml';
+        $xml = curl_do($url);
+        $arr = xml2array($xml);
+        foreach ($arr['c']['d'] as $k=>$v){
+            $data[$k]['code'] = $v['@attributes']['d1'];
+            $data[$k]['name'] = $v['@attributes']['d2'];
+        }
+
+        return $data;
+    }
+
 
 }

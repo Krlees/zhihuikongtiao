@@ -78,6 +78,18 @@ if (!function_exists('array2xml')) {
     }
 }
 
+if (!function_exists('xml2array')) {
+    /**
+     * 将xml转为array
+     */
+    function xml2array($xml)
+    {
+        // 将XML转为array
+        $array_data = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return $array_data;
+    }
+}
+
 
 if (!function_exists('custom_config')) {
     /**

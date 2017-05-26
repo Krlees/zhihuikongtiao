@@ -264,7 +264,7 @@
                     <div class="text">
                         <span class="text-time">2017年4月14日</span>
                         <span class="text-weather">晴</span>
-                        <span class="text-humidity">湿度：<i class="room_humidity">30</i>%</span>
+                        <span class="text-humidity">湿度：<i class="room_humidity">30</i></span>
                     </div>
                 </div>
             </div>
@@ -481,10 +481,9 @@
 
         // 调用当前天气
         $.getJSON("{{url('admin/device/get-weather')}}", {}, function (res) {
-            var temps = res.weatherinfo.temp2.substr(0, 2);
-            $(".room_temp").text(temps);
-            $(".room_humidity").text(res.weatherinfo.temp1.substr(0, 2));
-            $(".text-weather").text(res.weatherinfo.weather);
+            $(".room_temp").text(res.temp);
+            $(".room_humidity").text(res.humidity);
+            $(".text-weather").text(res.weather);
 
             bestTemp = Math.ceil((temps - 0) * 0.7);
             $("#best-temp").html(bestTemp + '<i>℃</i>');

@@ -142,7 +142,7 @@ class DeviceService extends BaseService
 
     public function getNowWeather($cityCode)
     {
-        $url = 'http://www.weather.com.cn/data/cityinfo/' . $cityCode . '.html';
+        $url = 'http://api.help.bj.cn/apis/weather/?id=' . $cityCode;
 
         return curl_do($url);
     }
