@@ -489,7 +489,7 @@
             bestTemp = Math.ceil((temps - 0) / 0.7);
             if( bestTemp < 16 ){
                 bestTemp = 16;
-            } else if( bestTemp < 30 ){
+            } else if( bestTemp > 30 ){
                 bestTemp = 30;
             }
 
