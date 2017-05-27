@@ -70,8 +70,6 @@ class DeviceService extends BaseService
             $where[] = [
                 [$this->device->getTable().'.name', 'like', "%{$param['search']}%", 'OR'],
                 ['room.name', 'like', "%{$param['search']}%", 'OR'],
-                ['did', 'like', "%{$param['search']}%", 'OR'],
-                ['mac', 'like', "%{$param['search']}%", 'OR'],
             ];
         }
 
