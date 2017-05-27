@@ -52,7 +52,7 @@ class StrategyService extends BaseService
         $total = $strategyDb->count();
         foreach ($rows as $k => $v) {
             $rows[$k]['times'] = $v['start_time'] . '-' . $v['end_time'];
-            $rows[$k]['temp'] = $v['temp'] . '-' . $v['temp_end'];
+            $rows[$k]['temps'] = $v['temp_start'] . '-' . $v['temp_end'];
         }
 
         return compact('rows', 'total');

@@ -11,7 +11,8 @@
             {!! $tablePresenter->jsCheckbox() !!}
             {!! $tablePresenter->jsColums('策略名称','name') !!}
             {!! $tablePresenter->jsColums('时间范围','times') !!}
-            {!! $tablePresenter->jsColums('调节的温度值','temp') !!}
+            {!! $tablePresenter->jsColums('设定的温度值','temp') !!}
+            {!! $tablePresenter->jsColums('调节上下温度值','temp') !!}
             {!! $tablePresenter->jsColums('是否需要除湿','is_humidity','true') !!}
             {!! $tablePresenter->jsEvents(['remove']) !!}
         ];

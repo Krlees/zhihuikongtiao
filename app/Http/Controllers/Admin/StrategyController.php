@@ -71,6 +71,7 @@ class StrategyController extends BaseController
                     'checked' => false
                 ]
             ]);
+            $this->returnFieldFormat('text', '设定温度值', 'data[temp]', '', ['dataType' => 'n']);
             $extendField = $strategyPresenter->times();
 
             $reponse = $this->returnFormFormat('添加策略', $this->formField);
