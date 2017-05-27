@@ -11,8 +11,9 @@
                 {!! $tablePresenter->jsCheckbox() !!}
                 {!! $tablePresenter->jsColums('id','id') !!}
                 {!! $tablePresenter->jsColums('设备标识名','name') !!}
-                {!! $tablePresenter->jsColums('设备号','did') !!}
-                {!! $tablePresenter->jsColums('mac地址','mac') !!}
+                {{--{!! $tablePresenter->jsColums('设备号','did') !!}--}}
+                {{--{!! $tablePresenter->jsColums('mac地址','mac') !!}--}}
+                {!! $tablePresenter->jsColums('所在房间','room') !!}
                 {{--{!! $tablePresenter->jsColums('productkey','productkey') !!}--}}
                 {{--{!! $tablePresenter->jsColums('passcode','passcode') !!}--}}
                 {{--{!! $tablePresenter->jsColums('type','type') !!}--}}

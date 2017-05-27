@@ -82,6 +82,10 @@ class DeviceService extends BaseService
             ->get()
             ->toArray();
         $rows = cleanArrayObj($rows);
+        foreach ($rows as $k=>$v){
+            $rooms = DB::table('room')->where('id',$v['room_id'])->first(['name']);
+            $rows[$k]['room'] = $rooms->name;
+        }
 
         $total = $deviceDb->where($where)->count();
 
@@ -172,6 +176,7 @@ class DeviceService extends BaseService
 
         // 2. 绑定设备,获取设备状态
         $result = $this->bingDevice($gizwitsCfg['appid'], $gizwitsCfg['productkey'], $gizwitsCfg['productsecret'], $gizwitUser['token'], $data['mac']);
+        dd($result);
         if (isset($result['error_code'])) {
             return false;
         }
