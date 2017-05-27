@@ -79,7 +79,7 @@ class DeviceService extends BaseService
         $rows = DB::table($this->device->getTable())->join('room','room.id','=',$this->device->getTable().'.room_id')
             ->where($where)->offset($param['offset'])->limit($param['limit'])
             ->orderBy($sort, $param['order'])
-            ->get(['room.name',$this->device->getTable().'.*'])
+            ->get(['room.name as room',$this->device->getTable().'.*'])
             ->toArray();
         $rows = cleanArrayObj($rows);
 
