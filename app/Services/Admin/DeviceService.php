@@ -66,12 +66,12 @@ class DeviceService extends BaseService
         $userId = $this->getCurrentUser();
 
         $where[] = [$this->device->getTable().'.user_id', '=', $userId];
-        if (isset($param['search'])) {
-            $where[] = [
-                [$this->device->getTable().'.name', 'like', "%{$param['search']}%", 'OR'],
-                ['room.name', 'like', "%{$param['search']}%", 'OR'],
-            ];
-        }
+//        if (isset($param['search'])) {
+//            $where[] = [
+//                [$this->device->getTable().'.name', 'like', "%{$param['search']}%", 'OR'],
+//                ['room.name', 'like', "%{$param['search']}%", 'OR'],
+//            ];
+//        }
 
         $sort = $param['sort'] ?: $this->device->getKeyName();
         $rows = DB::table($this->device->getTable())->join('room','room.id','=',$this->device->getTable().'.room_id')
