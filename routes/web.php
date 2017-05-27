@@ -19,6 +19,9 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return redirect('admin/index');
 });
+Route::get('/home', function () {
+    return redirect('admin/index');
+});
 // 后台路由
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'auth.admin']], function () {
 

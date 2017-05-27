@@ -10,10 +10,14 @@ namespace App\Services\Admin;
 
 
 use App\Models\Room;
+use App\Traits\Admin\UserTraits;
 use DB;
 
 class RoomService extends BaseService
 {
+
+    use UserTraits;
+
     protected $room;
     private $tbName;
 
@@ -25,6 +29,8 @@ class RoomService extends BaseService
 
     public function ajaxList($param)
     {
+        $userId = $this->getCurrentUser();
+
         $where = [];
         if (isset($param['search'])) {
             $where = [
@@ -32,6 +38,7 @@ class RoomService extends BaseService
                 ['num', 'like', "%{$param['search']}%"],
             ];
         }
+        $where[] = ['user_id','=',$userId];
 
         $roomDb = DB::table($this->tbName);
         $sort = $param['sort'] ?: $this->room->getKeyName();
@@ -68,6 +75,7 @@ class RoomService extends BaseService
 
     public function addData($data)
     {
+        $data['user_id'] = $this->getCurrentUser();
         $data['created_at'] = date('Y-m-d H:i:s');
         return DB::table($this->tbName)->insert($data);
     }

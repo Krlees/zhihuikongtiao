@@ -74,7 +74,6 @@ class DeviceCron extends Command
 
 
                 $response = $this->sendControlGiz($gizwitsCfg['appid'], $result['token'], $v['did'], $cmd);
-                dd($response);
 
             }
         }
