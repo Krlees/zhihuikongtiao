@@ -65,29 +65,26 @@ class DeviceService extends BaseService
 
         $userId = $this->getCurrentUser();
 
-        $where = [];
+        $where[] = [$this->device->getTable().'.user_id', '=', $userId];
         if (isset($param['search'])) {
-            $where = [
-                ['name', 'like', "%{$param['search']}%", 'OR'],
+            $where[] = [
+                [$this->device->getTable().'.name', 'like', "%{$param['search']}%", 'OR'],
+                ['room.name', 'like', "%{$param['search']}%", 'OR'],
                 ['did', 'like', "%{$param['search']}%", 'OR'],
                 ['mac', 'like', "%{$param['search']}%", 'OR'],
             ];
         }
-        $where[] = ['user_id', '=', $userId, 'AND'];
 
-        $deviceDb = DB::table($this->device->getTable());
         $sort = $param['sort'] ?: $this->device->getKeyName();
-        $rows = $deviceDb->where($where)->offset($param['offset'])->limit($param['limit'])
+        $rows = DB::table($this->device->getTable())->join('room','room.id','=',$this->device->getTable().'.room_id')
+            ->where($where)->offset($param['offset'])->limit($param['limit'])
             ->orderBy($sort, $param['order'])
-            ->get()
+            ->get(['room.name',$this->device->getTable().'.*'])
             ->toArray();
         $rows = cleanArrayObj($rows);
-        foreach ($rows as $k=>$v){
-            $rooms = DB::table('room')->where('id',$v['room_id'])->first(['name']);
-            $rows[$k]['room'] = $rooms->name;
-        }
 
-        $total = $deviceDb->where($where)->count();
+        $total = DB::table($this->device->getTable())->join('room','room.id','=',$this->device->getTable().'.room_id')
+            ->where($where)->count();
 
         return compact('rows', 'total');
     }

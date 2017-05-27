@@ -17,7 +17,7 @@
                 {{--{!! $tablePresenter->jsColums('productkey','productkey') !!}--}}
                 {{--{!! $tablePresenter->jsColums('passcode','passcode') !!}--}}
                 {{--{!! $tablePresenter->jsColums('type','type') !!}--}}
-                {!! $tablePresenter->jsColums('加入时间','created_at','true') !!}
+                {{--{!! $tablePresenter->jsColums('加入时间','created_at','true') !!}--}}
             {
                 'field': '',
                 'title': '操作',
