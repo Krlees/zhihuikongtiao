@@ -60,7 +60,6 @@ class StrategyController extends BaseController
         } else {
 
             $this->returnFieldFormat('text', '策略名称', 'data[name]', '', ['dataType' => 's1-30']);
-            $this->returnFieldFormat('text', '调节的温度', 'data[temp]');
             $this->returnFieldFormat('radio', '是否开启除湿', 'data[is_humidity]', [
                 [
                     'text' => '是',
