@@ -43,6 +43,7 @@ class RoomService extends BaseService
 
         $rows = $roomDb
             ->select([$this->tbName . '.*', DB::raw('(select name from users where users.id=' . $this->room->getTable() . '.user_id) as hotel')])
+            ->where($where)
             ->offset($param['offset'])->limit($param['limit'])
             ->orderBy($sort, $param['order'])
             ->get()
