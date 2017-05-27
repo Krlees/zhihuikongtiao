@@ -52,6 +52,7 @@ class StrategyService extends BaseService
         $total = $strategyDb->count();
         foreach ($rows as $k => $v) {
             $rows[$k]['times'] = $v['start_time'] . '-' . $v['end_time'];
+            $rows[$k]['temp'] = $v['temp'] . '-' . $v['temp_end'];
         }
 
         return compact('rows', 'total');
@@ -115,7 +116,7 @@ class StrategyService extends BaseService
         $nowHour = date('H:i:00');
 
         $result = DB::table($this->strategy->getTable())->where('user_id', $userId)->where('temp', '<=', $inTemp)->where('temp_end', '>=', $inTemp)->first(['temp', 'is_humidity']);
-        if($result)
+        if ($result)
             return obj2arr($result);
 
 
