@@ -54,10 +54,7 @@ class RoomController extends BaseController
 
         } else {
             $userList = $userService->getUserSelects(0); // 所有一级酒店
-            $this->returnFieldFormat('select', '酒店', 'data[user_id]',
-                $this->returnSelectFormat($userList, 'name', 'id'), ['id' => 'top']
-            );
-            $this->returnFieldFormat('select', '', 'data[user_id]', [], ['id' => 'sub']);
+//            $this->returnFieldFormat('select', '', 'data[user_id]', [], ['id' => 'sub']);
             $this->returnFieldFormat('text', '房号', 'data[num]', '', ['dateType' => 'n']);
             $this->returnFieldFormat('text', '房间名称', 'data[name]', '');
 
