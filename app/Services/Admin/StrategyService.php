@@ -108,11 +108,16 @@ class StrategyService extends BaseService
      * @Author Krlee
      *
      */
-    public function get()
+    public function get($inTemp)
     {
         $userId = $this->getCurrentUser();
 
         $nowHour = date('H:i:00');
+
+        $result = DB::table($this->strategy->getTable())->where('user_id', $userId)->where('temp', '<=', $inTemp)->where('temp_end', '>=', $inTemp)->first(['temp', 'is_humidity']);
+        if($result)
+            return obj2arr($result);
+
 
         $result = DB::table($this->strategy->getTable())->where('user_id', $userId)->where('start_time', '>=', $nowHour)->where('end_time', '<=', $nowHour)->first(['temp', 'is_humidity']);
         $result = obj2arr($result);

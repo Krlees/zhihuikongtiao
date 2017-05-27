@@ -159,7 +159,7 @@ class StrategyController extends BaseController
         }
 
         // 匹配策略
-        $result = $this->strategy->get();
+        $result = $this->strategy->get($inTemp);
         if ($result) {
             $cmd = $qianhaiService->getAirCmd();
             $cmd[14] = $result['temp'];
