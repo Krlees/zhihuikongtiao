@@ -31,14 +31,12 @@ class RoomService extends BaseService
     {
         $userId = $this->getCurrentUser();
 
-        $where = [];
-        if (isset($param['search'])) {
-            $where = [
-                ['name', 'like', "%{$param['search']}%", 'OR'],
-                ['num', 'like', "%{$param['search']}%"],
-            ];
-        }
         $where[] = ['user_id','=',$userId];
+        if (isset($param['search'])) {
+            $where[] = ['name', 'like', "%{$param['search']}%", 'OR'];
+            $where[] = ['num', 'like', "%{$param['search']}%"];
+        }
+
 
         $roomDb = DB::table($this->tbName);
         $sort = $param['sort'] ?: $this->room->getKeyName();
