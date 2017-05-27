@@ -67,7 +67,7 @@ class DeviceService extends BaseService
 
         $where[] = [$this->device->getTable() . '.user_id', '=', $userId];
         if (isset($param['search'])) {
-            $where[] = [$this->device->getTable() . '.name', 'like', "%{$param['search']}%", 'OR'];
+            $where[] = [$this->device->getTable() . '.name', 'like', "%{$param['search']}%", 'AND'];
             $where[] = ['room.name', 'like', "%{$param['search']}%", 'OR'];
         }
 
