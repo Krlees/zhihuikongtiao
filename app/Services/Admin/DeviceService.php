@@ -60,9 +60,10 @@ class DeviceService extends BaseService
      *
      * @param $param
      */
-    public function ajaxList($param)
+    public function ajaxList($param,$bool)
     {
-
+        $bool = $bool ? true : false;
+        $appId = Config::get('gizwits.cfg.appid');
         $userId = $this->getCurrentUser();
 
         $where[] = [$this->device->getTable() . '.user_id', '=', $userId];
@@ -73,14 +74,53 @@ class DeviceService extends BaseService
 
         $sort = $param['sort'] ?: $this->device->getKeyName();
         $rows = DB::table($this->device->getTable())->join('room', 'room.id', '=', $this->device->getTable() . '.room_id')
-            ->where($where)->offset($param['offset'])->limit($param['limit'])
+            ->where($where)
+//            ->offset($param['offset'])->limit($param['limit'])
             ->orderBy($sort, $param['order'])
             ->get(['room.name as room', $this->device->getTable() . '.*'])
             ->toArray();
         $rows = cleanArrayObj($rows);
 
-        $total = DB::table($this->device->getTable())->join('room', 'room.id', '=', $this->device->getTable() . '.room_id')
-            ->where($where)->count();
+        // 机智云获取已绑定设备接口
+        $userToken = $this->createGizwitUser($appId, $userId);
+        $result = $this->updateGizwitDevice($appId, $userToken['token']);
+        $result = $result['devices'];
+        foreach ($rows as $k=>$v){
+            foreach ($result as $v2){
+                if( $v2['did'] == $v['did'] && $v2['is_online'] == $bool ){
+                    unset($rows[$k]);
+                }
+            }
+        }
+
+
+//
+//        $total = DB::table($this->device->getTable())->join('room', 'room.id', '=', $this->device->getTable() . '.room_id')
+//            ->where($where)->count();
+        $total = 1;
+
+        return compact('rows', 'total');
+    }
+
+    public function ajaxGizwitList($param)
+    {
+        $userId = $this->getCurrentUser();
+        $appId = Config::get('gizwits.cfg.appid');
+        $userToken = $this->createGizwitUser($appId, $userId);
+
+        $result = $this->updateGizwitDevice($appId, $userToken['token']);
+        $total = 1;
+        $rows = $result['devices'];
+
+        $tbName = $this->device->getTable();
+        foreach ($rows as $k=>$v){
+            $devices = DB::table($tbName)->join('room', 'room.id', '=', $tbName . '.room_id')
+                                ->where($tbName.'.did',$v['did'])
+                                ->first([$tbName.'.id',$tbName.'.name','room.name as room']);
+            $rows[$k]['id']   = $devices->id;
+            $rows[$k]['name'] = $devices->name;
+            $rows[$k]['room'] = $devices->room;
+        }
 
         return compact('rows', 'total');
     }

@@ -101,7 +101,7 @@ trait GizwitTraits
             'x-gizwits-user-token: ' . $userToken
         ];
 
-        $res = curl_do('http://api.gizwits.com/app/bindings?show_disabled=1&limit=20&skip=0', $header);
+        $res = curl_do('http://api.gizwits.com/app/bindings?show_disabled=0&limit=100&skip=0', $header);
 
         return json_decode($res, true);
     }
