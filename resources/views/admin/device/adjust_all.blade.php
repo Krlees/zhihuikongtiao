@@ -244,7 +244,7 @@
                     <a class="btn btn-info" href="javascript:;">
                         设备智能调控
                     </a>
-                    <a class="btn btn-default" href="{{url('admin/device/index')}}">
+                    <a class="btn btn-default" href="javascript:history.go(-1)">
                         返回
                     </a>
                 </div>
