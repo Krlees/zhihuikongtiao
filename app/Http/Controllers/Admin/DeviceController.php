@@ -50,7 +50,7 @@ class DeviceController extends BaseController
         } else {
 
             $action = $this->returnActionFormat(url('admin/device/add'), url('admin/device/edit'), url('admin/device/del'));
-            $reponse = $this->returnSearchFormat(url('admin/device/index'), null, $action);
+            $reponse = $this->returnSearchFormat(url('admin/device/index').'/'.$bool, null, $action);
 
             return view('admin/device/index', compact('reponse'));
         }
