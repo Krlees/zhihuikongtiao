@@ -94,7 +94,7 @@ class DeviceService extends BaseService
         $result = $result['devices'];
         foreach ($rows as $k => $v) {
             foreach ($result as $v2) {
-                if ($v2['did'] == $v['did'] && $v2['is_online'] == $bool) {
+                if ($v2['did'] == $v['did'] && $v2['is_online'] != $bool) {
                     unset($rows[$k]);
                 }
             }
