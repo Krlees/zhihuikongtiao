@@ -60,7 +60,7 @@ class DeviceService extends BaseService
      *
      * @param $param
      */
-    public function ajaxList($param)
+    public function ajaxList($param,$bool)
     {
 
         $appId = Config::get('gizwits.cfg.appid');
@@ -84,11 +84,11 @@ class DeviceService extends BaseService
             ->where($where)->count();
 
         // 机智云获取已绑定设备接口
-        if (!isset($param['bool'])) {
+        if (!isset($bool)) {
             return compact('rows', 'total');
         }
 
-        $bool = array_get($param, 'bool') ? true : false;
+        $bool = $bool ? true : false;
         $userToken = $this->createGizwitUser($appId, $userId);
         $result = $this->updateGizwitDevice($appId, $userToken['token']);
         $result = $result['devices'];
