@@ -41,9 +41,8 @@ class DeviceController extends BaseController
         if ($request->ajax()) {
 
             $param = $this->cleanAjaxPageParam($request->all());
-            if( isset($bool)){
-                $param['bool'] = $bool;
-            }
+            $param['bool'] = $bool;
+
             $results = $this->device->ajaxList($param);
 
             return $this->responseAjaxTable($results['total'], $results['rows']);

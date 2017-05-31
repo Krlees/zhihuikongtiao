@@ -92,7 +92,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
     // 调控
     Route::group(['prefix' => 'device'], function () {
-        Route::any('index/{bool?}', 'DeviceController@index');
+        Route::any('index/{bool}', 'DeviceController@index');
         Route::any('add', 'DeviceController@add');
         Route::any('edit/{id}', 'DeviceController@edit');
         Route::any('del', 'DeviceController@del');
