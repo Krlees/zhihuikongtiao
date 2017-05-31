@@ -99,6 +99,7 @@ class DeviceService extends BaseService
                 }
             }
         }
+        sort($rows);
 
 //
 
