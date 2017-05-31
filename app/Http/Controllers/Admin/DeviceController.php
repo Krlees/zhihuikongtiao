@@ -36,12 +36,12 @@ class DeviceController extends BaseController
     }
 
     //
-    public function index($bool,Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
 
             $param = $this->cleanAjaxPageParam($request->all());
-            $results = $this->device->ajaxList($param,$bool);
+            $results = $this->device->ajaxList($param);
 
             return $this->responseAjaxTable($results['total'], $results['rows']);
 
