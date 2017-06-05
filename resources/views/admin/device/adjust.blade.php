@@ -787,7 +787,8 @@
         $.getJSON("{{url('admin/device/get-storage-times')}}", {did:did}, function (res) {
             if(res){
                 $(res).each(function (i,v) {
-                    $(".times[data-key="+v+"]").prop('btn-success');
+                    var hour = v.hour;
+                    $(".times[data-key="+hour+"]").prop('btn-success');
                 });
             }
         });
