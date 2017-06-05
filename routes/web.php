@@ -111,7 +111,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('get-weather', 'DeviceController@getWeather');   // 存储每次设备返回的状态
         Route::any('get-scene', 'DeviceController@getScene');   // 获取情景模式
         Route::any('get-user-token', 'DeviceController@getUserToken');   // 获取用户
-        Route::any('get-storage-times/{did}', 'DeviceController@getStorageTimes');   // 获取用户
+        Route::any('get-storage-times', 'DeviceController@getStorageTimes');   // 获取用户
     });
 
     // 电器

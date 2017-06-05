@@ -36,7 +36,7 @@ class DeviceController extends BaseController
     }
 
     //
-    public function index($bool,Request $request)
+    public function index($bool, Request $request)
     {
         if ($request->ajax()) {
 
@@ -50,7 +50,7 @@ class DeviceController extends BaseController
         } else {
 
             $action = $this->returnActionFormat(url('admin/device/add'), url('admin/device/edit'), url('admin/device/del'));
-            $reponse = $this->returnSearchFormat(url('admin/device/index').'/'.$bool, null, $action);
+            $reponse = $this->returnSearchFormat(url('admin/device/index') . '/' . $bool, null, $action);
 
             return view('admin/device/index', compact('reponse'));
         }
@@ -272,12 +272,17 @@ class DeviceController extends BaseController
      * @Author Krlee
      *
      */
-    public function getStorageTimes($did)
+    public function getStorageTimes(Request $request)
     {
+        $did = $request->input('did');
+        if (is_array($did)) {
+            $did = $did[0];
+        }
+
         $times = [];
         $cron = Cache::store('file')->get('device_cron_' . date('Y-m-d'));
-        foreach ($cron as $v){
-            if( $v['did'] == $did ){
+        foreach ($cron as $v) {
+            if ($v['did'] == $did) {
                 $times[] = $v;
             }
         }
