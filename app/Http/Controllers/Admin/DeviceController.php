@@ -267,6 +267,24 @@ class DeviceController extends BaseController
         return ['RAW_SMARTHOME' => $cmd];
     }
 
+    /**
+     * 获取存储的时间
+     * @Author Krlee
+     *
+     */
+    public function getStorageTimes($did)
+    {
+        $times = [];
+        $cron = Cache::store('file')->get('device_cron_' . date('Y-m-d'));
+        foreach ($cron as $v){
+            if( $v['did'] == $did ){
+                $times[] = $v;
+            }
+        }
+
+        return compact('times');
+    }
+
     public function getDataCount($deviceId, Request $request)
     {
         $brand = $request->input('brand_id');
