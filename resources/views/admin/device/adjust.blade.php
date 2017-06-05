@@ -788,7 +788,8 @@
             if(res){
                 $(res).each(function (i,v) {
                     var hour = v.hour;
-                    $(".times[data-key="+hour+"]").prop('btn-success');
+                    console.log(hour)
+                    $(".times[data-key=12]").prop('btn-success');
                 });
             }
         });
