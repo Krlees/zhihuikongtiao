@@ -83,7 +83,7 @@ class StrategyService extends BaseService
         return $list;
     }
 
-    public function setStrategyLog($deviceIds, $baetTemp, $outTemp, $inTemp)
+    public function setStrategyLog($deviceIds, $strategyId, $baetTemp, $outTemp, $inTemp)
     {
         $scale = ($baetTemp * 0.5) + ($outTemp * 0.2) + ($inTemp * 0.3);
 
@@ -91,6 +91,7 @@ class StrategyService extends BaseService
             foreach ($deviceIds as $deviceId) {
                 $result = DB::table('strategy_log')->insert([
                     'device_id' => $deviceId,
+                    'strategy_id' => $strategyId,
                     'out_temp' => $outTemp,
                     'in_temp' => $inTemp,
                     'scale' => $scale,
@@ -120,7 +121,7 @@ class StrategyService extends BaseService
             return obj2arr($result);
 
 
-        $result = DB::table($this->strategy->getTable())->where('user_id', $userId)->where('start_time', '>=', $nowHour)->where('end_time', '<=', $nowHour)->first(['temp', 'is_humidity']);
+        $result = DB::table($this->strategy->getTable())->where('user_id', $userId)->where('start_time', '>=', $nowHour)->where('end_time', '<=', $nowHour)->first(['id','temp', 'is_humidity']);
         $result = obj2arr($result);
 
         return $result;

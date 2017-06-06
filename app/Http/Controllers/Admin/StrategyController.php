@@ -161,19 +161,20 @@ class StrategyController extends BaseController
 
         // 匹配策略
         $result = $this->strategy->get($inTemp);
-        if ($result) {
-            $cmd = $qianhaiService->getAirCmd();
-            $cmd[14] = $result['temp'];
-            if ($result['is_humidity']) {
-                $cmd[21] = 1;
+        if (!$result) {
+            $this->responseData(80001);
+        }
 
-            }
+        $cmd = $qianhaiService->getAirCmd();
+        $cmd[14] = $result['temp'];
+        if ($result['is_humidity']) {
+            $cmd[21] = 1;
         }
 
         // 记录
-        $this->strategy->setStrategyLog($deviceIds, $bestTemp, $outTemp, $inTemp);
+        $this->strategy->setStrategyLog($deviceIds,$result['id'], $bestTemp, $outTemp, $inTemp);
 
-        return $result ? $this->responseData(0, '', ['RAW_SMARTHOME' => $cmd]) : $this->responseData(80001);
+        return $this->responseData(0, '', ['RAW_SMARTHOME' => $cmd]);
     }
 
 
