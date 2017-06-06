@@ -761,8 +761,8 @@
      *  检测节能策略是否介入
      */
     function checkStrategy() {
-        var outTemp = $("#room_temp").text() - 0; // 室外温度
-        var inTemp = $("#now_temp").text() - 0;  // 室内温度
+        var outTemp = $(".room_temp").text() - 0; // 室外温度
+        var inTemp = $(".now_temp").text() - 0;  // 室内温度
         if(strategyLock){
             return false;
         }
