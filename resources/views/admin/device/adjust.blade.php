@@ -699,6 +699,9 @@
         var cmd = value.attrs.RAW_SMARTHOME;
 
         if (cmd[3] == 80) {
+            if($cmd[24] >= 30 ){
+                $cmd[24] = 24;
+            }
             $(".now_temp").text(cmd[24]);
             $(".now_humidity").text(cmd[26]);
 
@@ -726,7 +729,7 @@
             {{--});--}}
 
             // 检测匹配节能策略
-            //checkStrategy();
+            checkStrategy();
 
         }
         else {
@@ -752,12 +755,17 @@
         layer.msg(value.toString());
     }
 
+    var strategyLock = false;
+
     /**
      *  检测节能策略是否介入
      */
     function checkStrategy() {
         var outTemp = $("#room_temp").text() - 0; // 室外温度
         var inTemp = $("#now_temp").text() - 0;  // 室内温度
+        if(strategyLock){
+            return false;
+        }
 
         $.ajax({
             url: '{{url('admin/strategy/set-strategy-log')}}',
@@ -770,17 +778,19 @@
                 deviceId:deviceId
             },
         })
-            .done(function (res) {
-                if(res.code == '0'){
-                    ajaxCmd(res.cmd);
-                }
-            })
-            .fail(function () {
-                console.log("error");
-            })
-            .always(function () {
-                console.log("complete");
-            });
+        .done(function (res) {
+            if(res.code == '0'){
+                ajaxCmd(res.cmd);
+            }
+        })
+        .fail(function () {
+            console.log("error");
+        })
+        .always(function () {
+            console.log("complete");
+        });
+
+        strategyLock = true;
     }
 
     getStorageTimes();
