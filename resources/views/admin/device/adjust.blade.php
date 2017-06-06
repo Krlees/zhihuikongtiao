@@ -744,6 +744,7 @@
         for (var key in value.attrs) {
             str = str + key + ":" + value.attrs[key] + "; ";
         }
+        console.log(str);
 
     }
 
