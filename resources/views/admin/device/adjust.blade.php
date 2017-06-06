@@ -699,11 +699,11 @@
         var cmd = value.attrs.RAW_SMARTHOME;
 
         if (cmd[3] == 80) {
-            if($cmd[24] >= 30 ){
-                $cmd[24] = 24;
-            }
-            $(".now_temp").text(cmd[24]);
-            $(".now_humidity").text(cmd[26]);
+//            if($cmd[26] >= 30 ){
+//                $cmd[26] = 24;
+//            }
+            $(".now_temp").text(cmd[26]);
+            $(".now_humidity").text(cmd[28]);
 
             // 当前室内温度等于设置的温度
             if (cmd[24] == $(".temp").val()) {
