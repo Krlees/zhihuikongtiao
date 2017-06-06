@@ -726,7 +726,7 @@
             {{--});--}}
 
             // 检测匹配节能策略
-            checkStrategy();
+            //checkStrategy();
 
         }
         else {
