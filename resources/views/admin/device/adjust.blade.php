@@ -359,15 +359,15 @@
             <div class="ibox-content adjust-content">
                 <div class="row">
                     {{--<div class="col-md-2">--}}
-                        {{--<label class="control-label">情景模式</label>--}}
-                        {{--<div class="btn-group">--}}
-                            {{--<button data-key="1" class="scene_mode btn-adjust btn btn-white" type="button">经济--}}
-                            {{--</button>--}}
-                            {{--<button data-key="2" class="scene_mode btn-adjust btn btn-white" type="button">舒适--}}
-                            {{--</button>--}}
-                            {{--<button data-key="3" class="scene_mode btn-adjust btn btn-success" type="button">环保--}}
-                            {{--</button>--}}
-                        {{--</div>--}}
+                    {{--<label class="control-label">情景模式</label>--}}
+                    {{--<div class="btn-group">--}}
+                    {{--<button data-key="1" class="scene_mode btn-adjust btn btn-white" type="button">经济--}}
+                    {{--</button>--}}
+                    {{--<button data-key="2" class="scene_mode btn-adjust btn btn-white" type="button">舒适--}}
+                    {{--</button>--}}
+                    {{--<button data-key="3" class="scene_mode btn-adjust btn btn-success" type="button">环保--}}
+                    {{--</button>--}}
+                    {{--</div>--}}
                     {{--</div>--}}
                     <div class="col-md-2">
                         <label class="control-label">风速调节</label>
@@ -474,6 +474,26 @@
     var roomState = true;
     var bestTemp = 0;
 
+    var nightTimes = "{{$nightSetting['times']}}";
+    var nightTemp = "{{$nightSetting['temp']}}";
+    var nightHumidity = {{$nightSetting['is_humidity']}};
+    var nightLock = false;
+
+    setInterval(function () {
+        if(nightLock){
+            return false;
+        }
+
+        var d = new Date();
+        var hours = d.getHours();
+        var minute = d.getMinutes();
+
+        if (hours == (nightTimes - 0)) {
+            $(".temp").val(nightTemp);
+            ajaxCmd();
+            nightLock = true;
+        }
+    }, 1000 * 60);
 
     $(function () {
 
@@ -487,9 +507,9 @@
             $(".text-weather").text(res.weather);
 
             bestTemp = Math.ceil((temps - 0) / 0.7);
-            if( bestTemp < 16 ){
+            if (bestTemp < 16) {
                 bestTemp = 16;
-            } else if( bestTemp > 30 ){
+            } else if (bestTemp > 30) {
                 bestTemp = 30;
             }
 
@@ -763,7 +783,7 @@
     function checkStrategy() {
         var outTemp = $(".room_temp").text() - 0; // 室外温度
         var inTemp = $(".now_temp").text() - 0;  // 室内温度
-        if(strategyLock){
+        if (strategyLock) {
             return false;
         }
 
@@ -775,31 +795,31 @@
                 _token: "{{csrf_token()}}",
                 out_temp: outTemp,
                 in_temp: inTemp,
-                deviceId:deviceId
+                deviceId: deviceId
             },
         })
-        .done(function (res) {
-            if(res.code == '0'){
-                ajaxCmd(res.cmd);
-            }
-        })
-        .fail(function () {
-            console.log("error");
-        })
-        .always(function () {
-            console.log("complete");
-        });
+            .done(function (res) {
+                if (res.code == '0') {
+                    ajaxCmd(res.cmd);
+                }
+            })
+            .fail(function () {
+                console.log("error");
+            })
+            .always(function () {
+                console.log("complete");
+            });
 
         strategyLock = true;
     }
 
     getStorageTimes();
     function getStorageTimes() {
-        $.getJSON("{{url('admin/device/get-storage-times')}}", {did:did}, function (res) {
-            if(res){
-                $(res.times).each(function (i,v) {
+        $.getJSON("{{url('admin/device/get-storage-times')}}", {did: did}, function (res) {
+            if (res) {
+                $(res.times).each(function (i, v) {
                     var hour = v.hour;
-                    $(".times[data-key="+hour+"]").addClass('btn-success');
+                    $(".times[data-key=" + hour + "]").addClass('btn-success');
                 });
             }
         });

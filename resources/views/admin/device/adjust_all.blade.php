@@ -394,6 +394,27 @@
     var deviceIds = [];
     var didCount = {{count($info)}};
 
+    var nightTimes = "{{$nightSetting['times']}}";
+    var nightTemp = "{{$nightSetting['temp']}}";
+    var nightHumidity = {{$nightSetting['is_humidity']}};
+    var nightLock = false;
+
+    setInterval(function () {
+        if(nightLock){
+            return false;
+        }
+
+        var d = new Date();
+        var hours = d.getHours();
+        var minute = d.getMinutes();
+
+        if (hours == (nightTimes - 0)) {
+            $(".temp").val(nightTemp);
+            ajaxCmd();
+            nightLock = true;
+        }
+    }, 1000 * 60);
+
     $(function () {
 
 
@@ -417,6 +438,18 @@
         gizwitsws.init();
         gizObj[{{$k}}] = gizwitsws;
         @endforeach
+
+        getStorageTimes();
+        function getStorageTimes() {
+            $.getJSON("{{url('admin/device/get-storage-times')}}", {did:dids[0]}, function (res) {
+                if(res){
+                    $(res.times).each(function (i,v) {
+                        var hour = v.hour;
+                        $(".times[data-key="+hour+"]").addClass('btn-success');
+                    });
+                }
+            });
+        }
 
         // 情景模式
         {{--$(".scene_mode").on('click', function () {--}}
@@ -619,6 +652,7 @@
         var cmd = value.attrs.RAW_SMARTHOME;
 
         if (cmd[3] == 80) {
+            console.log(cmd);
             $(".now_temp").text(cmd[24]);
             $(".now_humidity").text(cmd[26]);
 
@@ -671,34 +705,7 @@
         layer.msg(value.toString());
     }
 
-    /**
-     *  检测节能策略是否介入
-     */
-    function checkStrategy() {
-        var outTemp = $("#room_temp").text() - 0; // 室外温度
-        var inTemp = $("#now_temp").text() - 0;  // 室内温度
 
-        $.ajax({
-            url: '{{url('admin/strategy/set-strategy-log')}}',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                _token: "{{csrf_token()}}",
-                out_temp: outTemp,
-                in_temp: inTemp,
-                deviceIds: deviceIds.join(","),
-            },
-        })
-            .done(function () {
-                console.log("success");
-            })
-            .fail(function () {
-                console.log("error");
-            })
-            .always(function () {
-                console.log("complete");
-            });
-    }
 
 
 </script>
